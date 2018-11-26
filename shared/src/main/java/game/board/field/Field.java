@@ -1,6 +1,4 @@
-package board.field;
-
-import player.FieldColor;
+package game.board.field;
 
 public abstract class Field {
     protected FieldStatus status;
@@ -16,7 +14,7 @@ public abstract class Field {
     }
 
     public boolean isPartOfBoard() {
-        return status != FieldStatus.UNAVAILABLE;
+        return status != FieldStatus.ILLEGAL;
     }
 
     public FieldColor getColor() {

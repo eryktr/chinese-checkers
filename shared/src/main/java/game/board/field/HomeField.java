@@ -1,6 +1,4 @@
-package board.field;
-
-import player.FieldColor;
+package game.board.field;
 
 public class HomeField extends Field {
     public HomeField(FieldColor owner) {

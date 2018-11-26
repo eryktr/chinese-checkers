@@ -1,7 +1,7 @@
-package board.field;
+package game.board.field;
 
 public enum FieldStatus {
     FREE,
     OCCUPIED,
-    UNAVAILABLE
+    ILLEGAL
 }

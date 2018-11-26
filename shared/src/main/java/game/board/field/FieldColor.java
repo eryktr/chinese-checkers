@@ -1,4 +1,4 @@
-package player;
+package game.board.field;
 
 public enum FieldColor {
     RED,
