@@ -10,7 +10,7 @@ public class Board {
     private Field[][] fields = new Field[NUMBER_OF_ROWS][NUMBER_OF_DIAGONALS];
 
 
-    public Board() throws IllegalNumberOfPlayersException {}
+    public Board() {}
 
     private void initializeFields() {}
     private void initializeUnavailableFields() {}
