@@ -1,6 +1,5 @@
 package game.board.field.fieldinitializer;
 
-import game.board.Board;
 import game.board.field.Field;
 
 public abstract class FieldInitializer {
@@ -8,7 +7,7 @@ public abstract class FieldInitializer {
 
     public void initializeFields() {
         initializeIllegalFields();
-        initializeAvailableFields();
+        initializeHexagonFields();
         initializePlayerHomeFields();
     }
     protected  void initializePlayerHomeFields() {
@@ -20,7 +19,7 @@ public abstract class FieldInitializer {
         initializeOrangePlayerFields();
     }
     protected abstract void initializeIllegalFields();
-    protected abstract void initializeAvailableFields();
+    protected abstract void initializeHexagonFields();
 
     protected abstract void initializeRedPlayerFields();
     protected abstract void initializeGreenPlayerFields();

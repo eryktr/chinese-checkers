@@ -20,7 +20,7 @@ public class ConcreteFieldInitializer extends FieldInitializer {
     }
 
     @Override
-    protected void initializeAvailableFields() {
+    protected void initializeHexagonFields() {
         //TODO
     }
 

@@ -3,6 +3,7 @@ package game.board;
 public final class BoardInformation {
     public static final int NUMBER_OF_ROWS = 17;
     public static final int NUMBER_OF_DIAGONALS = 17;
+    public static final int[] FIELDS_PER_DIAGONAL = {1, 2, 3, 4, 13, 12, 11, 10, 9, 10, 11, 12, 13, 4, 3, 2, 1};
     public static final int[][] RED_PLAYER_FIELDS_COORDINATES = {
             {13, 4}, {13, 5}, {13, 6}, {13, 7},
             {14, 4}, {14, 5}, {14, 6},
