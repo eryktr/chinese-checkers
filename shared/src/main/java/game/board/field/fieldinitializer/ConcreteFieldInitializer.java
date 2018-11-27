@@ -1,6 +1,7 @@
 package game.board.field.fieldinitializer;
 
 import game.board.Board;
+import game.board.BoardInformation;
 import game.board.field.IllegalField;
 
 public class ConcreteFieldInitializer extends FieldInitializer {
@@ -11,8 +12,8 @@ public class ConcreteFieldInitializer extends FieldInitializer {
 
     @Override
     protected void initializeIllegalFields() {
-        for(int i = 0; i < Board.NUMBER_OF_ROWS; i++) {
-            for(int j = 0; j < Board.NUMBER_OF_DIAGONALS; j++) {
+        for(int i = 0; i < BoardInformation.NUMBER_OF_ROWS; i++) {
+            for(int j = 0; j < BoardInformation.NUMBER_OF_DIAGONALS; j++) {
                 fields[i][j] = new IllegalField();
             }
         }
@@ -24,7 +25,33 @@ public class ConcreteFieldInitializer extends FieldInitializer {
     }
 
     @Override
-    protected void initializePlayerHomeFields() {
-        //TODO
+    protected void initializeRedPlayerFields() {
+
     }
+
+    @Override
+    protected void initializeGreenPlayerFields() {
+
+    }
+
+    @Override
+    protected void initializeBluePlayerFields() {
+
+    }
+
+    @Override
+    protected void initializeYellowPlayerFields() {
+
+    }
+
+    @Override
+    protected void initializePurplePlayerFields() {
+
+    }
+
+    @Override
+    protected void initializeOrangePlayerFields() {
+
+    }
+
 }
