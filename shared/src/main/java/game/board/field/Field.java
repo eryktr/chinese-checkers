@@ -13,7 +13,7 @@ public abstract class Field {
         return !color.equals(FieldColor.NONE);
     }
 
-    public boolean isPartOfBoard() {
+    public boolean isLegal() {
         return status != FieldStatus.ILLEGAL;
     }
 
