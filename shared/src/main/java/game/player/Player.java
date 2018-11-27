@@ -1,6 +1,9 @@
 package game.player;
 
+import game.board.field.FieldColor;
+
 public interface Player {
     void makeMove();
-    void getColor();
+    FieldColor getColor();
+    FieldColor getEnemyColor();
 }
