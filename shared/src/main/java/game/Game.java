@@ -42,4 +42,8 @@ public final class Game {
     public void setPieces(Piece[] pieces) {
         this.pieces = pieces;
     }
+
+    public int getNumberOfPlayers() {
+        return players.length;
+    }
 }

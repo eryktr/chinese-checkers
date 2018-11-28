@@ -19,8 +19,6 @@ public class ConcreteGameBuilder implements GameBuilder {
 
     private enum PlayerType {HUMAN, BOT}
 
-    ;
-
     @Override
     public Game buildGame(final int numberOfHumanPlayers, final int numberOfBots) {
         game = new Game();
@@ -33,6 +31,7 @@ public class ConcreteGameBuilder implements GameBuilder {
         return game;
     }
 
+    @Override
     public Game buildGame(GameSettings settings) {
         final int numberOfHumanPlayers = settings.getNumberOfHumanPlayers();
         final int numberOfBotPlayers = settings.getNumberOfBots();
