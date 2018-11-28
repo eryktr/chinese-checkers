@@ -19,8 +19,8 @@ public class ConcreteGameBuilder implements GameBuilder {
     public Game buildGame(final int numberOfPlayers) {
         game = new Game();
         board = buildBoard();
-        players = buildPlayers(numberOfPlayers);
         pieces = buildPieces(numberOfPlayers);
+        players = buildPlayers(numberOfPlayers);
         game.setBoard(board);
         game.setPlayers(players);
         game.setPieces(pieces);
@@ -30,14 +30,6 @@ public class ConcreteGameBuilder implements GameBuilder {
     private Board buildBoard() {
         Board board = new Board();
         return board;
-    }
-
-    private Player[] buildPlayers(final int numberOfPlayers) {
-        Player[] players = new Player[numberOfPlayers];
-        for (int i = 0; i < numberOfPlayers; i++) {
-            players[i] = new HumanPlayer(FieldColor.fromNumber(i));
-        }
-        return players;
     }
 
     private Piece[] buildPieces(final int numberOfPlayers) {
@@ -51,5 +43,17 @@ public class ConcreteGameBuilder implements GameBuilder {
             }
         }
         return pieces;
+    }
+
+    private Player[] buildPlayers(final int numberOfPlayers) {
+        Player[] players = new Player[numberOfPlayers];
+        for (int i = 0; i < numberOfPlayers; i++) {
+            FieldColor newPlayerColor = FieldColor.fromNumber(i);
+            Player newPlayer = new HumanPlayer(newPlayerColor);
+            Piece[] newPlayerPieces = game.getPlayerPieces(newPlayerColor);
+            newPlayer.setPieces(newPlayerPieces);
+            players[i] = newPlayer;
+        }
+        return players;
     }
 }

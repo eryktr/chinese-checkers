@@ -23,6 +23,7 @@ public final class HumanPlayer implements Player {
         return enemyColor;
     }
 
+    @Override
     public void setPieces(Piece[] pieces) {
         this.pieces = pieces;
     }
