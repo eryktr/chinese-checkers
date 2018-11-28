@@ -13,44 +13,49 @@ public class FieldInitializerTest {
 
     private Board board;
     private FieldInitializer fieldInitializer;
-    private Field[][] initializedFields;
+    private Field[] initializedFields;
 
     @Before
     public void prepareTest() {
         board = new Board();
-        fieldInitializer = new ConcreteFieldInitializer(board);
-        board.initializeFields();
-        initializedFields = board.getFields();
-    }
-
-    @Test
-    public void IllegalFieldsAreProperlyInitialized() {
-        Field potentialIllegalField1 = initializedFields[0][0];
-        Field potentialIllegalField2 = initializedFields[16][16];
-        Field potentialIllegalField3 = initializedFields[3][1];
-        Assert.assertFalse(potentialIllegalField1.isLegal());
-        Assert.assertFalse(potentialIllegalField2.isLegal());
-        Assert.assertFalse(potentialIllegalField3.isLegal());
     }
 
     @Test
     public void HexagonIsProperlyInitialized() {
-        Field potentialHexagonField1 = initializedFields[4][8];
-        Field potentialHexagonField2 = initializedFields[4][12];
-        Field potentialHexagonField3 = initializedFields[12][4];
+        try {
+            performHexagonTest();
+        }
+        catch (NoSuchFieldException e) {
+            onNoSuchFieldException(e);
+        }
+    }
+
+    @Test
+    public void HomeFieldsAreProperlyInitialized() {
+        try {
+            performHomeFieldsTest();
+        }
+        catch (NoSuchFieldException e) {
+            onNoSuchFieldException(e);
+        }
+    }
+
+    private void performHexagonTest() throws NoSuchFieldException {
+        Field potentialHexagonField1 = board.getFieldByCoordinates(4, 8);
+        Field potentialHexagonField2 = board.getFieldByCoordinates(4, 12);
+        Field potentialHexagonField3 = board.getFieldByCoordinates(12, 4);
         Assert.assertTrue(potentialHexagonField1.isLegal() && !potentialHexagonField1.isHomeField());
         Assert.assertTrue(potentialHexagonField2.isLegal() && !potentialHexagonField1.isHomeField());
         Assert.assertTrue(potentialHexagonField3.isLegal() && !potentialHexagonField3.isHomeField());
     }
 
-    @Test
-    public void HomeFieldsAreProperlyInitialized() {
-        Field potentialRedField = initializedFields[13][4];
-        Field potentialGreenField = initializedFields[3][12];
-        Field potentialBlueField = initializedFields[4][4];
-        Field potentialYellowField = initializedFields[4][14];
-        Field potentialPurpleField = initializedFields[9][3];
-        Field potentialOrangeField = initializedFields[10][11];
+    private void performHomeFieldsTest() throws NoSuchFieldException {
+        Field potentialRedField =  board.getFieldByCoordinates(13, 4);
+        Field potentialGreenField =  board.getFieldByCoordinates(3, 12);
+        Field potentialBlueField = board.getFieldByCoordinates(4,4);
+        Field potentialYellowField =board.getFieldByCoordinates(4, 14);
+        Field potentialPurpleField =board.getFieldByCoordinates(9, 3);
+        Field potentialOrangeField =board.getFieldByCoordinates(10, 11);
 
         Assert.assertTrue(isProperlyIntializedHomeField(potentialRedField, FieldColor.RED));
         Assert.assertTrue(isProperlyIntializedHomeField(potentialGreenField, FieldColor.GREEN));
@@ -62,5 +67,9 @@ public class FieldInitializerTest {
 
     private boolean isProperlyIntializedHomeField(Field field, FieldColor desiredColor) {
         return field.getColor() == desiredColor && field.isHomeField();
+    }
+
+    private void onNoSuchFieldException(NoSuchFieldException e) {
+        System.out.println(e.getMessage());
     }
 }

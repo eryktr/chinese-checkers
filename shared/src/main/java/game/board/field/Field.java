@@ -1,6 +1,8 @@
 package game.board.field;
 
 public abstract class Field {
+    protected int row;
+    protected int diagonal;
     protected FieldStatus status;
     protected FieldColor color;
 
@@ -20,6 +22,15 @@ public abstract class Field {
     public FieldColor getColor() {
         return color;
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getDiagonal() {
+        return diagonal;
+    }
+
 
 
 

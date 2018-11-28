@@ -2,31 +2,54 @@ package game.gamebuilder;
 
 import game.Game;
 import game.board.Board;
+import game.board.field.Field;
+import game.board.field.FieldColor;
 import game.board.piece.Piece;
+import game.player.HumanPlayer;
 import game.player.Player;
 
 public class ConcreteGameBuilder implements GameBuilder {
 
-    @Override
-    public Game buildGame(int numberOfPlayers) {
-        Board board = buildBoard(numberOfPlayers);
-        Player[] players = buildPlayers(numberOfPlayers);
-        Piece[] pieces = buildPieces(numberOfPlayers);
-        return null;
-    }
+    private Game game;
+    private Board board;
+    private Player[] players;
+    private Piece[] pieces;
 
     @Override
-    public Board buildBoard(int numberOfPlayers) {
-        return null;
+    public Game buildGame(final int numberOfPlayers) {
+        game = new Game();
+        board = buildBoard();
+        players = buildPlayers(numberOfPlayers);
+        pieces = buildPieces(numberOfPlayers);
+        game.setBoard(board);
+        game.setPlayers(players);
+        game.setPieces(pieces);
+        return game;
     }
 
-    @Override
-    public Player[] buildPlayers(int numberOfPlayers) {
-        return new Player[0];
+    private Board buildBoard() {
+        Board board = new Board();
+        return board;
     }
 
-    @Override
-    public Piece[] buildPieces(int numberOfPlayers) {
-        return new Piece[0];
+    private Player[] buildPlayers(final int numberOfPlayers) {
+        Player[] players = new Player[numberOfPlayers];
+        for (int i = 0; i < numberOfPlayers; i++) {
+            players[i] = new HumanPlayer(FieldColor.fromNumber(i));
+        }
+        return players;
+    }
+
+    private Piece[] buildPieces(final int numberOfPlayers) {
+        Piece[] pieces = new Piece[10 * numberOfPlayers];
+        int currentCounter = 0;
+        for (int playerNumber = 0; playerNumber < numberOfPlayers; playerNumber++) {
+            FieldColor currentPlayerColor = FieldColor.fromNumber(playerNumber);
+            for (Field field : board.getFields(currentPlayerColor) ) {
+                pieces[currentCounter] = new Piece(field, currentPlayerColor);
+                currentCounter++;
+            }
+        }
+        return pieces;
     }
 }

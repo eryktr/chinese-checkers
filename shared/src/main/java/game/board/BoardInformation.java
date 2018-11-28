@@ -5,6 +5,7 @@ import game.board.field.FieldColor;
 public final class BoardInformation {
     public static final int NUMBER_OF_ROWS = 17;
     public static final int NUMBER_OF_DIAGONALS = 17;
+    public static final int NUMBER_OF_FIELDS = 121;
     public static final int[] FIELDS_PER_DIAGONAL = {1, 2, 3, 4, 13, 12, 11, 10, 9, 10, 11, 12, 13, 4, 3, 2, 1};
     //ORDER: RED, GREEN, BLUE, YELLOW, PURPLE, ORANGE
     public static final int[][][] PLAYER_FIELDS_COORDINATES = {
