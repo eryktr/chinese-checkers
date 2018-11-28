@@ -6,5 +6,5 @@ import game.board.piece.Piece;
 import game.player.Player;
 
 public interface GameBuilder {
-    Game buildGame(final int numberOfPlayers);
+    Game buildGame(final int numberOfHumanPlayers, final int numberOfBots);
 }

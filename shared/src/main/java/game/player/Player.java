@@ -5,7 +5,10 @@ import game.board.piece.Piece;
 
 public interface Player {
     void makeMove();
+    void setPieces(Piece[] pieces);
+    boolean isBot();
     FieldColor getColor();
     FieldColor getEnemyColor();
-    void setPieces(Piece[] pieces);
+
+
 }

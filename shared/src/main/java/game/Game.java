@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Game {
+public final class Game {
     private Player[] players;
     private Piece[] pieces;
     private List<Player> winners = new ArrayList<>();
