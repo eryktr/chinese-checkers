@@ -3,6 +3,7 @@ package game;
 import game.board.Board;
 import game.board.field.FieldColor;
 import game.board.piece.Piece;
+import game.gamesettings.GameSettings;
 import game.player.Player;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class Game {
+    private GameSettings gameSettings;
     private Player[] players;
     private Piece[] pieces;
     private List<Player> winners = new ArrayList<>();
@@ -41,6 +43,10 @@ public final class Game {
 
     public void setPieces(Piece[] pieces) {
         this.pieces = pieces;
+    }
+
+    public void setSettings(GameSettings settings) {
+        gameSettings = settings;
     }
 
     public int getNumberOfPlayers() {

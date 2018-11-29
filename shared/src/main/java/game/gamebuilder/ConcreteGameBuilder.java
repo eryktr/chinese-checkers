@@ -20,22 +20,16 @@ public class ConcreteGameBuilder implements GameBuilder {
     private enum PlayerType {HUMAN, BOT}
 
     @Override
-    public Game buildGame(final int numberOfHumanPlayers, final int numberOfBots) {
+    public Game buildGame(GameSettings settings) {
         game = new Game();
         board = buildBoard();
-        pieces = buildPieces(numberOfHumanPlayers);
-        players = buildPlayers(numberOfHumanPlayers, numberOfBots);
+        pieces = buildPieces(settings.getNumberOfHumanPlayers() + settings.getNumberOfBots());
+        players = buildPlayers(settings.getNumberOfHumanPlayers(), settings.getNumberOfBots());
+        game.setSettings(settings);
         game.setBoard(board);
         game.setPlayers(players);
         game.setPieces(pieces);
         return game;
-    }
-
-    @Override
-    public Game buildGame(GameSettings settings) {
-        final int numberOfHumanPlayers = settings.getNumberOfHumanPlayers();
-        final int numberOfBotPlayers = settings.getNumberOfBots();
-        return buildGame(numberOfHumanPlayers, numberOfBotPlayers);
     }
 
     private Board buildBoard() {

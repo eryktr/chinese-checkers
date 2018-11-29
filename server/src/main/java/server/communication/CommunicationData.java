@@ -14,7 +14,7 @@ public final class CommunicationData {
 
     }
 
-    public void initializeFields(final int numberOfHumanPlayers) {
+    public void setUp(final int numberOfHumanPlayers) {
         playerSockets = new Socket[numberOfHumanPlayers];
         playerInputReaders = new BufferedReader[numberOfHumanPlayers];
         playerOutputWriters = new PrintWriter[numberOfHumanPlayers];
