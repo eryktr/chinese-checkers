@@ -21,6 +21,7 @@ public class Server extends ServerSocket {
 
     public void listen() throws IOException, CommunicationException, GameNotFoundException {
         while (serverRunning) {
+            System.out.println("LOOP");
             Socket newPlayer = accept();
             System.out.println("Hello!");
             BufferedReader newPlayerInputReader = getPlayerInputStreamReader(newPlayer);
@@ -42,6 +43,7 @@ public class Server extends ServerSocket {
             GameThread newGame = new GameThread(settings, player);
             games.add(newGame);
             newGame.start();
+            System.out.println("Thread started");
         }
         else if(joinerType.equals("join")) {
             GameThread possibleGame = findOpenGame();
@@ -61,7 +63,9 @@ public class Server extends ServerSocket {
     }
 
     private GameSettings setUpGame(BufferedReader hostInputReader) throws IOException {
+        System.out.println("Inside setUp");
         String gameOptionsLine = hostInputReader.readLine();
+        System.out.println("Options: "+ gameOptionsLine);
         return new GameSettings(gameOptionsLine);
     }
 

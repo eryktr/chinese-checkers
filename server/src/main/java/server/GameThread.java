@@ -28,7 +28,7 @@ public class GameThread extends Thread {
     @Override
     public void run() {
         while(numberOfJoinedPlayers < numberOfHumanPlayers) {
-            //waiting
+
         }
         game = gameBuilder.buildGame(gameSettings);
 

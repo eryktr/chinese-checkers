@@ -17,5 +17,10 @@ public class Run {
         String line = br.readLine();
         System.out.println(line);
 
+        while (true) {
+            String stringg = scanner.nextLine();
+            out.println(stringg);
+        }
     }
 }
+
