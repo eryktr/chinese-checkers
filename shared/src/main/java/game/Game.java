@@ -1,14 +1,18 @@
 package game;
 
 import game.board.Board;
+import game.board.field.Field;
 import game.board.field.FieldColor;
 import game.board.piece.Piece;
+import game.gamebuilder.ConcreteGameBuilder;
+import game.gamebuilder.GameBuilder;
 import game.gamesettings.GameSettings;
 import game.player.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public final class Game {
     private GameSettings gameSettings;
@@ -16,9 +20,15 @@ public final class Game {
     private Piece[] pieces;
     private List<Player> winners = new ArrayList<>();
     private Board board;
+    private GameBuilder gameBuilder;
 
-    public Player[] getPlayers() {
-        return players;
+    public Game(GameSettings settings) {
+        setSettings(settings);
+        gameBuilder = new ConcreteGameBuilder();
+    }
+
+    public Player getPlayerByNumber(int number) {
+        return players[number];
     }
 
     public Board getBoard() {
@@ -27,10 +37,6 @@ public final class Game {
 
     public Piece[] getPlayerPieces(FieldColor playerColor) {
         return (Piece [])Arrays.stream(pieces).filter(piece -> piece.getPieceColor() == playerColor).toArray();
-    }
-
-    public boolean anybodyWon() {
-        return false;
     }
 
     public void setBoard(Board board) {
@@ -51,5 +57,39 @@ public final class Game {
 
     public int getNumberOfPlayers() {
         return players.length;
+    }
+
+    public int getNumberOfHumanPlayers() {
+        return gameSettings.getNumberOfHumanPlayers();
+    }
+
+    public int getNumberOfBots() {
+        return gameSettings.getNumberOfBots();
+    }
+
+    public void setUp() {
+        gameBuilder.buildGame(this);
+    }
+
+    public Field getFieldByCoordinates(int row, int diagonal) throws Exception {
+        Optional<Field> result =  Arrays.stream(board.getFields())
+                .filter(f -> f.getRow() == row && f.getDiagonal() == diagonal)
+                .findFirst();
+        if(result.isPresent()) {
+            return result.get();
+        }
+        else {
+            throw new Exception("Field doesn't exist");
+        }
+    }
+
+    public Piece getPieceByField(Field field) throws Exception {
+        Optional<Piece> result = Arrays.stream(pieces).filter(p -> p.getPosition() == field).findFirst();
+        if (result.isPresent()) {
+            return result.get();
+        }
+        else {
+            throw new Exception("Field is empty");
+        }
     }
 }

@@ -31,5 +31,11 @@ public final class CommunicationData {
         currentNumberOfPlayers++;
     }
 
+    public BufferedReader getInputReaderByNumber(int number) {
+        return playerInputReaders[number];
+    }
 
+    public PrintWriter getPrintWriterByNumber(int number) {
+        return playerOutputWriters[number];
+    }
 }
