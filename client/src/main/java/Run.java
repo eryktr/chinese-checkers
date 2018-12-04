@@ -11,11 +11,13 @@ public class Run {
         Socket socket = new Socket("localhost", 8080);
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+        ListenerThread lt = new ListenerThread(br);
+        lt.start();
 
-        String string = scanner.nextLine();
-        out.println(string);
-        String line = br.readLine();
-        System.out.println(line);
+        //String string = scanner.nextLine();
+        //out.println(string);
+        //String line = br.readLine();
+        //System.out.println(line);
 
         while (true) {
             String stringg = scanner.nextLine();

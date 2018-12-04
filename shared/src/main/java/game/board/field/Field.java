@@ -31,7 +31,7 @@ public abstract class Field {
         return diagonal;
     }
 
-
-
-
+    public void setStatus(FieldStatus status) {
+        this.status = status;
+    }
 }

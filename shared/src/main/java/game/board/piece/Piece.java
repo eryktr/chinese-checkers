@@ -20,5 +20,9 @@ public class Piece {
         return currentPosition;
     }
 
+    public void setField(Field field) {
+        currentPosition = field;
+    }
+
 
 }

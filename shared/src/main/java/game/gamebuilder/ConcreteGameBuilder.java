@@ -5,7 +5,6 @@ import game.board.Board;
 import game.board.field.Field;
 import game.board.field.FieldColor;
 import game.board.piece.Piece;
-import game.gamesettings.GameSettings;
 import game.player.BotPlayer;
 import game.player.HumanPlayer;
 import game.player.Player;
@@ -23,11 +22,12 @@ public class ConcreteGameBuilder implements GameBuilder {
     public Game buildGame(Game game) {
         this.game = game;
         board = buildBoard();
-        pieces = buildPieces(game.getNumberOfHumanPlayers() + game.getNumberOfBots());
-        players = buildPlayers(game.getNumberOfHumanPlayers(), game.getNumberOfBots());
         game.setBoard(board);
-        game.setPlayers(players);
+        pieces = buildPieces(game.getNumberOfHumanPlayers() + game.getNumberOfBots());
         game.setPieces(pieces);
+        players = buildPlayers(game.getNumberOfHumanPlayers(), game.getNumberOfBots());
+        game.setPlayers(players);
+
         return game;
     }
 
@@ -52,24 +52,24 @@ public class ConcreteGameBuilder implements GameBuilder {
     private Player[] buildPlayers(final int numberOfHumanPlayers, final int numberOfBots) {
         final int numberOfPlayers = numberOfBots + numberOfHumanPlayers;
         Player[] players = new Player[numberOfPlayers];
-        initializeHumanPlayers(numberOfHumanPlayers);
-        initializeBotPlayers(numberOfBots, numberOfHumanPlayers);
+        initializeHumanPlayers(numberOfHumanPlayers, players);
+        initializeBotPlayers(numberOfBots, numberOfHumanPlayers, players);
         return players;
     }
 
-    private void initializeHumanPlayers(final int numberOfHumanPlayers) {
+    private void initializeHumanPlayers(final int numberOfHumanPlayers, Player[] players) {
         for (int i = 0; i < numberOfHumanPlayers; i++) {
-            initializePlayer(PlayerType.HUMAN, i, numberOfHumanPlayers);
+            initializePlayer(PlayerType.HUMAN, i, numberOfHumanPlayers, players);
         }
     }
 
-    private void initializeBotPlayers(final int numberOfBotPlayers, final int numberOfHumanPlayers) {
-        for (int i = 0; i < numberOfHumanPlayers; i++) {
-            initializePlayer(PlayerType.BOT, i, numberOfHumanPlayers);
+    private void initializeBotPlayers(final int numberOfBotPlayers, final int numberOfHumanPlayers, Player[] players) {
+        for (int i = 0; i < numberOfBotPlayers; i++) {
+            initializePlayer(PlayerType.BOT, i, numberOfHumanPlayers, players);
         }
     }
 
-    private void initializePlayer(PlayerType type, int playerNumber, int numberOfHumanPlayers) {
+    private void initializePlayer(PlayerType type, int playerNumber, int numberOfHumanPlayers, Player[] players) {
         FieldColor newPlayerColor = FieldColor.fromNumber(playerNumber);
         Player newPlayer = null;
         switch (type) {

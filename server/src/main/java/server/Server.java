@@ -40,14 +40,14 @@ public class Server extends ServerSocket {
             String line = "You are host";
             hostOutoutWriter.println(line);
             GameSettings settings = setUpGame(hostInputReader);
-            GameThread newGame = new GameThread(settings, player);
+            GameThread newGame = new GameThread(settings, player, hostInputReader, hostOutoutWriter);
             games.add(newGame);
             newGame.start();
             System.out.println("Thread started");
         }
         else if(joinerType.equals("join")) {
             GameThread possibleGame = findOpenGame();
-            possibleGame.addPlayer(player);
+            possibleGame.addPlayer(player, hostInputReader, hostOutoutWriter);
         }
     }
 

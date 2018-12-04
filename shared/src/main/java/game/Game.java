@@ -36,7 +36,15 @@ public final class Game {
     }
 
     public Piece[] getPlayerPieces(FieldColor playerColor) {
-        return (Piece [])Arrays.stream(pieces).filter(piece -> piece.getPieceColor() == playerColor).toArray();
+        Piece[] playerPieces = new Piece[10];
+        int i = 0;
+        for (Piece piece : pieces) {
+            if (piece.getPieceColor() == playerColor) {
+                playerPieces[i] = piece;
+                i++;
+            }
+        }
+        return playerPieces;
     }
 
     public void setBoard(Board board) {
@@ -92,4 +100,5 @@ public final class Game {
             throw new Exception("Field is empty");
         }
     }
+
 }

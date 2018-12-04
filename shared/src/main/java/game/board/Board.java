@@ -30,8 +30,15 @@ public class Board {
     }
 
     public Field[] getFields(FieldColor color) {
-        Object[] matching_fields = Arrays.stream(fields).filter(field -> field.getColor() == color).toArray();
-        return (Field[]) matching_fields;
+        Field[] matchingFields = new Field[10];
+        int i = 0;
+        for (Field field : fields) {
+            if (field.getColor() == color) {
+                matchingFields[i] = field;
+                i++;
+            }
+        }
+        return matchingFields;
     }
 
     public Field getFieldByCoordinates(int row, int diagonal) throws NoSuchFieldException {

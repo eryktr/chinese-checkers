@@ -21,12 +21,11 @@ public final class CommunicationData {
         playersConnected = new boolean[numberOfHumanPlayers];
     }
 
-    public void addPlayer(Socket playerSocket) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(playerSocket.getInputStream()));
-        PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(playerSocket.getOutputStream()));
+    public void addPlayer(Socket playerSocket, BufferedReader br, PrintWriter pw) throws IOException {
+        pw.println("Hello player");
         playerSockets[currentNumberOfPlayers] = playerSocket;
-        playerInputReaders[currentNumberOfPlayers] = bufferedReader;
-        playerOutputWriters[currentNumberOfPlayers] = printWriter;
+        playerInputReaders[currentNumberOfPlayers] = br;
+        playerOutputWriters[currentNumberOfPlayers] = pw;
         playersConnected[currentNumberOfPlayers] = true;
         currentNumberOfPlayers++;
     }

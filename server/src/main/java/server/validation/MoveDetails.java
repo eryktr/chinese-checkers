@@ -13,7 +13,6 @@ public class MoveDetails {
     private int destinationRow;
     private int destinationDiagonal;
 
-
     public MoveDetails(Player player, String moveLine) {
         this.player = player;
         String[] params = moveLine.split(" ");
