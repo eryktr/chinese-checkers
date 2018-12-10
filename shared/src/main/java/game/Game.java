@@ -30,9 +30,17 @@ public final class Game {
     public Player getPlayerByNumber(int number) {
         return players[number];
     }
+    
+    public GameSettings getSettings() {
+    	return this.gameSettings;
+    }
 
     public Board getBoard() {
         return board;
+    }
+    
+    public Piece[] getPieces() {
+    	return pieces;
     }
 
     public Piece[] getPlayerPieces(FieldColor playerColor) {

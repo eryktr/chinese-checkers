@@ -19,4 +19,8 @@ public final class GameSettings {
     public int getNumberOfBots() {
         return numberOfBots;
     }
+    
+    public String toString() {
+    	return Integer.toString(numberOfHumanPlayers) + " " + Integer.toString(numberOfBots);
+    }
 }

@@ -29,8 +29,8 @@ public class GameThread extends Thread {
 
     public GameThread(GameSettings settings, Socket host, BufferedReader br, PrintWriter pw) throws IOException {
         communicationData.setUp(settings.getNumberOfHumanPlayers());
-        addPlayer(host, br, pw);
         game = new Game(settings);
+        addPlayer(host, br, pw);
         validator = new GameAnalyzer(game);
     }
 
@@ -47,6 +47,7 @@ public class GameThread extends Thread {
             }
             catch (InterruptedException ex) {}
         }
+        communicationData.sendMessageToAllPlayers("Game started");
         game.setUp();
         started = true;
         currentPlayerNumber = rand.nextInt(game.getNumberOfPlayers());
@@ -101,6 +102,8 @@ public class GameThread extends Thread {
 
     public void addPlayer(Socket player, BufferedReader br, PrintWriter pw) throws IOException {
         communicationData.addPlayer(player, br, pw);
+        GameSettings gameSettings = this.game.getSettings();
+        pw.println(gameSettings.toString());
         numberOfJoinedPlayers++;
     }
 

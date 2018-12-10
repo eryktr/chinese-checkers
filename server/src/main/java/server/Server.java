@@ -46,8 +46,13 @@ public class Server extends ServerSocket {
             System.out.println("Thread started");
         }
         else if(joinerType.equals("join")) {
-            GameThread possibleGame = findOpenGame();
-            possibleGame.addPlayer(player, hostInputReader, hostOutoutWriter);
+        	try {
+        		GameThread possibleGame = findOpenGame();
+        		possibleGame.addPlayer(player, hostInputReader, hostOutoutWriter);
+        	}
+        	catch(GameNotFoundException e) {
+        		hostOutoutWriter.println("No game found");
+        	}
         }
     }
 

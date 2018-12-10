@@ -23,6 +23,7 @@ public final class CommunicationData {
 
     public void addPlayer(Socket playerSocket, BufferedReader br, PrintWriter pw) throws IOException {
         pw.println("Hello player");
+        pw.println(currentNumberOfPlayers);
         playerSockets[currentNumberOfPlayers] = playerSocket;
         playerInputReaders[currentNumberOfPlayers] = br;
         playerOutputWriters[currentNumberOfPlayers] = pw;
@@ -36,5 +37,11 @@ public final class CommunicationData {
 
     public PrintWriter getPrintWriterByNumber(int number) {
         return playerOutputWriters[number];
+    }
+    
+    public void sendMessageToAllPlayers(String message) {
+    	for(PrintWriter pw: playerOutputWriters) {
+    		pw.println(message);
+    	}
     }
 }
