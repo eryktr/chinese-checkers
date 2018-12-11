@@ -1,5 +1,6 @@
 package board;
 
+import client.Client;
 import game.Game;
 import game.board.field.Field;
 import game.board.field.FieldColor;
@@ -20,7 +21,9 @@ public class PieceCircle extends Circle implements BoardElement {
 		this.addEventFilter(MouseEvent.MOUSE_CLICKED, boardStage);
 	}
 
-	public void move(Field newPosition) {
+	public void move(Field newPosition, Client client) {
+		client.sendOption(piece.getPosition().positionToString() + " " + newPosition.positionToString());
+		System.out.println(piece.getPosition().positionToString() + " " + newPosition.positionToString());
         this.setCoordinates(newPosition);
         piece.getPosition().setStatus(FieldStatus.FREE);
 		newPosition.setStatus(FieldStatus.OCCUPIED);

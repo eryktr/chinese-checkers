@@ -66,12 +66,46 @@ public class GameAnalyzer {
         int row = position.getRow();
         int diagonal = position.getDiagonal();
 
-        return     !field(row, diagonal + 1).isFree() && field(row, diagonal + 2).isFree()
+        /*return     !field(row, diagonal + 1).isFree() && field(row, diagonal + 2).isFree()
                 || !field(row, diagonal - 1).isFree() && field(row, diagonal -2).isFree()
                 || !field(row + 1, diagonal).isFree() && field(row + 2, diagonal).isFree()
                 || !field(row - 1, diagonal).isFree() && field(row - 2, diagonal).isFree()
                 || !field(row -1, diagonal +1).isFree() && field(row -2, diagonal+2).isFree()
-                || !field(row + 1, diagonal - 1).isFree() && field(row + 2, diagonal - 2).isFree();
+                || !field(row + 1, diagonal - 1).isFree() && field(row + 2, diagonal - 2).isFree();*/
+        
+        boolean result = false;
+        
+        try {
+        	result = !field(row, diagonal + 1).isFree() && field(row, diagonal + 2).isFree();
+        }
+        catch(Exception e) {}
+        
+        try {
+        	result = result || !field(row, diagonal - 1).isFree() && field(row, diagonal -2).isFree();
+        }
+        catch(Exception e) {}
+        
+        try {
+        	result = result || !field(row + 1, diagonal).isFree() && field(row + 2, diagonal).isFree();
+        }
+        catch(Exception e) {}
+        
+        try {
+        	result = result || !field(row - 1, diagonal).isFree() && field(row - 2, diagonal).isFree();
+        }
+        catch(Exception e) {}
+        
+        try {
+        	result = result || !field(row -1, diagonal +1).isFree() && field(row -2, diagonal+2).isFree();
+        }
+        catch(Exception e) {}
+        
+        try {
+        	result = result || !field(row + 1, diagonal - 1).isFree() && field(row + 2, diagonal - 2).isFree();
+        }
+        catch(Exception e) {}
+        
+        return result;
     }
 
     private Field field(int row, int diagonal) throws Exception {

@@ -30,6 +30,7 @@ public class GameThread extends Thread {
     public GameThread(GameSettings settings, Socket host, BufferedReader br, PrintWriter pw) throws IOException {
         communicationData.setUp(settings.getNumberOfHumanPlayers());
         game = new Game(settings);
+        //game.setUp();
         addPlayer(host, br, pw);
         validator = new GameAnalyzer(game);
     }
@@ -60,6 +61,7 @@ public class GameThread extends Thread {
                 }
                 catch (Exception ex) {
                     System.out.println("Making move error");
+                    ex.printStackTrace();
                 }
             }
         }
@@ -75,9 +77,11 @@ public class GameThread extends Thread {
         Player currentPlayer = game.getPlayerByNumber(currentPlayerNumber);
         do {
             String moveLine = playerInputReader.readLine();
+            playerPrinrWriter.println("move: " + moveLine);
+            System.out.println("move: " + moveLine);
             details = new MoveDetails(currentPlayer, moveLine);
             isMoveLegal = validator.isValid(details, hasJumped);
-            makeMove(details);
+            //makeMove(details);
         } while (!isMoveLegal);
         return details;
     }
@@ -90,10 +94,15 @@ public class GameThread extends Thread {
 
         Field initialField = game.getFieldByCoordinates(initialRow, initialDiagonal);
         Field destinationField = game.getFieldByCoordinates(destinationRow, destinationDiagonal);
+        System.out.println("initialField: " + initialField.positionToString());
+        for(Piece piece: game.getPieces()) {
+        	System.out.println(piece.getPosition().positionToString());
+        }
         Piece targetPiece = game.getPieceByField(initialField);
 
         initialField.setStatus(FieldStatus.FREE);
         targetPiece.setField(destinationField);
+        //targetPiece.setField(initialField);
         destinationField.setStatus(FieldStatus.OCCUPIED);
 
         lastMovedPiece = targetPiece;
@@ -118,7 +127,7 @@ public class GameThread extends Thread {
         }
     }
 
-    private boolean hasPossibleJumps(Piece piece) throws Exception {
-        return validator.hasPossibleJumps(piece);
+    private boolean hasPossibleJumps(Piece piece) throws Exception {//dodałam && hasJumped
+        return validator.hasPossibleJumps(piece) && hasJumped;
     }
 }

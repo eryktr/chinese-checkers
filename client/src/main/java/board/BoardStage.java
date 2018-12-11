@@ -16,6 +16,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	private Player player;
 	private PieceCircle activePiece;
 	private Client client;
+	private boolean active;
 	
 	public BoardStage(Game game, int numberOfPlayer, Client client) {
 		this.game = game;
@@ -23,6 +24,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		this.activePiece = null;
 		this.player = game.getPlayerByNumber(numberOfPlayer);
 		this.client = client;
+		this.active = false;
 		
 		drawBoard();
 	}
@@ -55,17 +57,24 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	private boolean isMyElement(BoardElement element) {
 		return element.getColor().equals(player.getColor());
 	}
+	
+	public void activate() {
+		this.active = true;
+	}
+	
+	public void makeMove() {
+		//TODO
+	}
 
 	@Override
 	public void handle(MouseEvent event) {
-		//TODO
 		Object source = event.getSource();
 		BoardElement element = (BoardElement) source;
 		
-		if(element.isPiece() && isMyElement(element)) {
+		if(this.active == true && element.isPiece() && isMyElement(element)) {
 			this.activePiece = (PieceCircle) element;
 		}
-		else if(element.isField()) {
+		else if(element.isField() && this.active == true) {
 			FieldCircle fieldCircle = (FieldCircle) element;
 			Field newPosition = fieldCircle.getField();
 			boolean isMovePossible = false;
@@ -76,8 +85,9 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 					e.printStackTrace();
 				}
 				if(isMovePossible) {
-					this.activePiece.move(newPosition);
+					this.activePiece.move(newPosition, client);
 					this.activePiece = null;
+					this.active = false;
 				}
 			}
 		}

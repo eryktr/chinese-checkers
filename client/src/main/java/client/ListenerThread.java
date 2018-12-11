@@ -6,6 +6,7 @@ import board.BoardStage;
 import game.Game;
 import game.gamesettings.GameSettings;
 import gui.InformationStage;
+import gui.YourTurnStage;
 import javafx.application.Platform;
 
 public class ListenerThread extends Thread {
@@ -42,7 +43,7 @@ public class ListenerThread extends Thread {
                     	System.out.println("I got game started");
                     	Platform.runLater(()->{
                     		client.closePreviousStage();
-                    		BoardStage boardStage = new BoardStage(this.game, this.playerNumber, this.client);
+                    		boardStage = new BoardStage(this.game, this.playerNumber, this.client);
                     		boardStage.show();
                     	});
                     }
@@ -51,6 +52,14 @@ public class ListenerThread extends Thread {
                     	Platform.runLater(()->{
                     		InformationStage newStage = new InformationStage("Game not found");
                         	newStage.show();
+                    	});
+                    }
+                    
+                    else if(currentLine.contains("Your turn.")) {
+                    	Platform.runLater(()->{
+                    		boardStage.activate();
+                    		YourTurnStage yourTurnStage = new YourTurnStage(client);
+                    		yourTurnStage.show();
                     	});
                     }
                 }
