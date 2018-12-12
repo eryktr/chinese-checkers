@@ -1,6 +1,7 @@
 package gui;
 
 import client.Client;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -27,12 +28,14 @@ public class YourTurnStage extends Stage {
 		gridPane.add(label, 0, 0);
 
 		Button button = new Button("Skip turn");
-		button.setOnAction(new EventHandler<ActionEvent>() {
+		/*button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent event) {
-                //TODO
+                client.sendOption("skip");
             }
-		});
+		});*/
+		
+		button.setOnAction(new SkipTurnEvent(client, this));
 		
 		gridPane.add(button, 0, 1);
 		

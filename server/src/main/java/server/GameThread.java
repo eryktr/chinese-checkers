@@ -77,6 +77,10 @@ public class GameThread extends Thread {
         Player currentPlayer = game.getPlayerByNumber(currentPlayerNumber);
         do {
             String moveLine = playerInputReader.readLine();
+            
+            if(moveLine.contains("skip"))
+            	return null;
+            
             //playerPrinrWriter.println("move: " + moveLine + " " + currentPlayerNumber);
             //System.out.println("move: " + moveLine + " " + currentPlayerNumber);
             //this.communicationData.sendMessageToAllPlayers("move: " + moveLine + " " + currentPlayerNumber);
@@ -88,6 +92,8 @@ public class GameThread extends Thread {
     }
 
     private void makeMove(MoveDetails details) throws Exception {
+    	if(details != null) {
+    	
         int initialRow = details.getInitialRow();
         int initialDiagonal = details.getInitialDiagonal();
         int destinationRow = details.getDestinationRow();
@@ -108,6 +114,7 @@ public class GameThread extends Thread {
 
         lastMovedPiece = targetPiece;
         hasJumped = validator.moveIsJump(initialField, destinationField);
+    	}
     }
 
     public void addPlayer(Socket player, BufferedReader br, PrintWriter pw) throws IOException {
