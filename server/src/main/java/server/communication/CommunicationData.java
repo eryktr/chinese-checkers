@@ -21,7 +21,7 @@ public final class CommunicationData {
         playersConnected = new boolean[numberOfHumanPlayers];
     }
 
-    public void addPlayer(Socket playerSocket, BufferedReader br, PrintWriter pw) throws IOException {
+    public void addPlayer(Socket playerSocket, BufferedReader br, PrintWriter pw) {
         pw.println("Hello player");
         pw.println(currentNumberOfPlayers);
         playerSockets[currentNumberOfPlayers] = playerSocket;

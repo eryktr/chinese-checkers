@@ -13,12 +13,16 @@ public class GameAnalyzer {
         this.game = game;
     }
 
-    public boolean isValid(MoveDetails details, boolean hasJumped) throws Exception {
+    public boolean isValid(MoveDetails details, boolean hasJumped, Piece lastMovedPiece) throws Exception {
         Field initialField = game.getFieldByCoordinates(details.getInitialRow(), details.getInitialDiagonal());
         Field destinationField = game.getFieldByCoordinates(details.getDestinationRow(), details.getDestinationDiagonal());
         if(!sourceOccupiedAndDestFree(initialField, destinationField))
             return false;
         Piece activePiece = game.getPieceByField(initialField);
+        if (lastMovedPiece != null && activePiece != lastMovedPiece) {
+            System.out.println("I was reached");
+            return false;
+        }
         if (!pieceColorMatches(activePiece, details.getPlayer()))
             return false;
         if (!hasJumped)
@@ -48,68 +52,44 @@ public class GameAnalyzer {
                 || dest.getRow() == source.getRow() - 1 && dest.getDiagonal() == source.getDiagonal() + 1;
     }
 
-    public boolean moveIsJump(Field source, Field dest) throws Exception {
+    public boolean moveIsJump(Field source, Field dest)  {
         int sr = source.getRow();
         int sd = source.getDiagonal();
         int dr = dest.getRow();
         int dd = dest.getDiagonal();
 
-        return     (dr == sr) && (dd == sd + 2) && !field(sr, sd +1).isFree()
-                || (dr == sr) && (dd == sd -2) && !field(sr, sd -1).isFree()
-                || (dr == sr + 2) && dd == sd && !field(sr + 1, sd).isFree()
-                || (dr == sr - 2) && dd == sd && !field(sr -1, sd).isFree()
-                || (dr == sr +2) && dd == sd-2 && !field(sr + 1, sd - 1).isFree()
-                || (dr == sr - 2) && dd == sd + 2 && !field(sr - 1, sd + 1).isFree();
+        return     (dr == sr) && (dd == sd + 2) && fieldOccupied(sr, sd +1)
+                || (dr == sr) && (dd == sd -2) && fieldOccupied(sr, sd -1)
+                || (dr == sr + 2) && dd == sd && fieldOccupied(sr + 1, sd)
+                || (dr == sr - 2) && dd == sd && fieldOccupied(sr -1, sd)
+                || (dr == sr +2) && dd == sd-2 && fieldOccupied(sr + 1, sd - 1)
+                || (dr == sr - 2) && dd == sd + 2 && fieldOccupied(sr - 1, sd + 1);
     }
 
-    public boolean hasPossibleJumps(Piece targetPiece) throws Exception {
+    private boolean fieldOccupied(int row, int diag) {
+        Field dest = field(row, diag);
+        return dest.isLegal() && !dest.isFree();
+    }
+
+    public boolean hasPossibleJumps(Piece targetPiece) {
         Field position = targetPiece.getPosition();
         int row = position.getRow();
         int diagonal = position.getDiagonal();
 
-        /*return     !field(row, diagonal + 1).isFree() && field(row, diagonal + 2).isFree()
-                || !field(row, diagonal - 1).isFree() && field(row, diagonal -2).isFree()
-                || !field(row + 1, diagonal).isFree() && field(row + 2, diagonal).isFree()
-                || !field(row - 1, diagonal).isFree() && field(row - 2, diagonal).isFree()
-                || !field(row -1, diagonal +1).isFree() && field(row -2, diagonal+2).isFree()
-                || !field(row + 1, diagonal - 1).isFree() && field(row + 2, diagonal - 2).isFree();*/
-        
-        boolean result = false;
-        
-        try {
-        	result = !field(row, diagonal + 1).isFree() && field(row, diagonal + 2).isFree();
-        }
-        catch(Exception e) {}
-        
-        try {
-        	result = result || !field(row, diagonal - 1).isFree() && field(row, diagonal -2).isFree();
-        }
-        catch(Exception e) {}
-        
-        try {
-        	result = result || !field(row + 1, diagonal).isFree() && field(row + 2, diagonal).isFree();
-        }
-        catch(Exception e) {}
-        
-        try {
-        	result = result || !field(row - 1, diagonal).isFree() && field(row - 2, diagonal).isFree();
-        }
-        catch(Exception e) {}
-        
-        try {
-        	result = result || !field(row -1, diagonal +1).isFree() && field(row -2, diagonal+2).isFree();
-        }
-        catch(Exception e) {}
-        
-        try {
-        	result = result || !field(row + 1, diagonal - 1).isFree() && field(row + 2, diagonal - 2).isFree();
-        }
-        catch(Exception e) {}
-        
-        return result;
+        return     fieldOccupied(row, diagonal + 1) && fieldFree(row, diagonal + 2)
+                || fieldOccupied(row, diagonal - 1) && fieldFree(row, diagonal -2)
+                || fieldOccupied(row + 1, diagonal) && fieldFree(row + 2, diagonal)
+                || fieldOccupied(row - 1, diagonal) && fieldFree(row - 2, diagonal)
+                || fieldOccupied(row -1, diagonal +1) && fieldFree(row -2, diagonal+2)
+                || fieldOccupied(row + 1, diagonal - 1) && fieldFree(row + 2, diagonal - 2);
     }
 
-    private Field field(int row, int diagonal) throws Exception {
+    private boolean fieldFree(int row, int diag) {
+        Field dest = field(row, diag);
+        return dest.isLegal() && dest.isFree();
+    }
+
+    private Field field(int row, int diagonal) {
         return game.getFieldByCoordinates(row, diagonal);
     }
     

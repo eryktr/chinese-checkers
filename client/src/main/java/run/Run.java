@@ -1,3 +1,5 @@
+package run;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +20,7 @@ import javafx.stage.Stage;
 public class Run extends Application {
 	private Client client;
 	
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
     	launch(args);
     	
         //Scanner scanner = new Scanner(System.in);

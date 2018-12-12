@@ -117,10 +117,6 @@ public class ListenerThread extends Thread {
     }
     
     private boolean isGameSettings(String line) {
-    	if(isNumber(line.substring(0, 1)) && isNumber(line.substring(2, 3)) && line.charAt(1)==' ') {
-    		return true;
-    	}
-    	else
-    		return false;
+		return isNumber(line.substring(0, 1)) && isNumber(line.substring(2, 3)) && line.charAt(1) == ' ';
     }
 }

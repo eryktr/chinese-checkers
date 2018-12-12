@@ -28,7 +28,7 @@ public class Client {
 	}
 	
 	public void setStage(Stage stage) {
-		this.stage = (Stage) stage;
+		this.stage = stage;
 	}
 	
 	public void closePreviousStage() {

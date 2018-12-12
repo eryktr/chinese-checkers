@@ -25,7 +25,7 @@ public class GameThread extends Thread {
     private int numberOfJoinedPlayers = 0;
     private int currentPlayerNumber;
     private boolean hasJumped = false;
-    private Piece lastMovedPiece;
+    private Piece lastMovedPiece = null;
 
     public GameThread(GameSettings settings, Socket host, BufferedReader br, PrintWriter pw) throws IOException {
         communicationData.setUp(settings.getNumberOfHumanPlayers());
@@ -82,13 +82,8 @@ public class GameThread extends Thread {
             
             if(moveLine.contains("skip"))
             	return null;
-            
-            //playerPrinrWriter.println("move: " + moveLine + " " + currentPlayerNumber);
-            //System.out.println("move: " + moveLine + " " + currentPlayerNumber);
-            //this.communicationData.sendMessageToAllPlayers("move: " + moveLine + " " + currentPlayerNumber);
             details = new MoveDetails(currentPlayer, moveLine);
-            isMoveLegal = validator.isValid(details, hasJumped);
-            //makeMove(details);
+            isMoveLegal = validator.isValid(details, hasJumped, lastMovedPiece);
         } while (!isMoveLegal);
         return details;
     }
@@ -96,26 +91,26 @@ public class GameThread extends Thread {
     private void makeMove(MoveDetails details) throws Exception {
     	if(details != null) {
     	
-        int initialRow = details.getInitialRow();
-        int initialDiagonal = details.getInitialDiagonal();
-        int destinationRow = details.getDestinationRow();
-        int destinationDiagonal = details.getDestinationDiagonal();
+            int initialRow = details.getInitialRow();
+            int initialDiagonal = details.getInitialDiagonal();
+            int destinationRow = details.getDestinationRow();
+            int destinationDiagonal = details.getDestinationDiagonal();
 
-        Field initialField = game.getFieldByCoordinates(initialRow, initialDiagonal);
-        Field destinationField = game.getFieldByCoordinates(destinationRow, destinationDiagonal);
-        System.out.println("initialField: " + initialField.positionToString());
-        for(Piece piece: game.getPieces()) {
-        	System.out.println(piece.getPosition().positionToString());
-        }
-        Piece targetPiece = game.getPieceByField(initialField);
+            Field initialField = game.getFieldByCoordinates(initialRow, initialDiagonal);
+            Field destinationField = game.getFieldByCoordinates(destinationRow, destinationDiagonal);
+            System.out.println("initialField: " + initialField.positionToString());
+            for(Piece piece: game.getPieces()) {
+                System.out.println(piece.getPosition().positionToString());
+            }
+            Piece targetPiece = game.getPieceByField(initialField);
 
-        initialField.setStatus(FieldStatus.FREE);
-        targetPiece.setField(destinationField);
-        destinationField.setStatus(FieldStatus.OCCUPIED);
-        this.communicationData.sendMessageToAllPlayers("move: " + details.moveToString() + " " + currentPlayerNumber);
+            initialField.setStatus(FieldStatus.FREE);
+            targetPiece.setField(destinationField);
+            destinationField.setStatus(FieldStatus.OCCUPIED);
+            this.communicationData.sendMessageToAllPlayers("move: " + details.moveToString() + " " + currentPlayerNumber);
 
-        lastMovedPiece = targetPiece;
-        hasJumped = validator.moveIsJump(initialField, destinationField);
+            lastMovedPiece = targetPiece;
+            hasJumped = validator.moveIsJump(initialField, destinationField);
     	}
     }
     
@@ -138,6 +133,7 @@ public class GameThread extends Thread {
     public void endMove() throws Exception {
         if (!hasPossibleJumps(lastMovedPiece)) {
             hasJumped = false;
+            lastMovedPiece = null;
             
             if(this.hasFinished(currentPlayerNumber)) {
             	this.addWinner(currentPlayerNumber);

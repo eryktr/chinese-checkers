@@ -32,7 +32,7 @@ public class Server extends ServerSocket {
         }
     }
 
-    private void processJoinerType(String joinerType, Socket player) throws CommunicationException, IOException, GameNotFoundException {
+    private void processJoinerType(String joinerType, Socket player) throws IOException {
         BufferedReader hostInputReader = getPlayerInputStreamReader(player);
         PrintWriter hostOutoutWriter = getPlayerOutputStreamWriter(player);
         if (joinerType.equals("host")) {
