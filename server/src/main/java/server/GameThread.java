@@ -57,7 +57,7 @@ public class GameThread extends Thread {
                 try {
                     MoveDetails newMoveDetails = listenForMove();
                     makeMove(newMoveDetails);
-                    endMove();
+                    endMove(newMoveDetails);
                 }
                 catch (Exception ex) {
                     System.out.println("Making move error");
@@ -77,8 +77,9 @@ public class GameThread extends Thread {
         Player currentPlayer = game.getPlayerByNumber(currentPlayerNumber);
         do {
             String moveLine = playerInputReader.readLine();
-            playerPrinrWriter.println("move: " + moveLine);
-            System.out.println("move: " + moveLine);
+            //playerPrinrWriter.println("move: " + moveLine + " " + currentPlayerNumber);
+            //System.out.println("move: " + moveLine + " " + currentPlayerNumber);
+            //this.communicationData.sendMessageToAllPlayers("move: " + moveLine + " " + currentPlayerNumber);
             details = new MoveDetails(currentPlayer, moveLine);
             isMoveLegal = validator.isValid(details, hasJumped);
             //makeMove(details);
@@ -102,8 +103,8 @@ public class GameThread extends Thread {
 
         initialField.setStatus(FieldStatus.FREE);
         targetPiece.setField(destinationField);
-        //targetPiece.setField(initialField);
         destinationField.setStatus(FieldStatus.OCCUPIED);
+        this.communicationData.sendMessageToAllPlayers("move: " + details.moveToString() + " " + currentPlayerNumber);
 
         lastMovedPiece = targetPiece;
         hasJumped = validator.moveIsJump(initialField, destinationField);
@@ -120,9 +121,10 @@ public class GameThread extends Thread {
         return started;
     }
 
-    public void endMove() throws Exception {
+    public void endMove(MoveDetails details) throws Exception {
         if (!hasPossibleJumps(lastMovedPiece)) {
             hasJumped = false;
+            //this.communicationData.sendMessageToAllPlayers("move: " + details.moveToString() + " " + currentPlayerNumber);
             currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
         }
     }

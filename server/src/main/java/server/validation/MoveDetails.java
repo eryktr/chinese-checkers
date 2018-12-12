@@ -41,4 +41,9 @@ public class MoveDetails {
     public Player getPlayer() {
         return player;
     }
+    
+    public String moveToString() {
+    	return Integer.toString(initialRow) + " " + Integer.toString(initialDiagonal) + " " +
+    Integer.toString(destinationRow) + " " + Integer.toString(destinationDiagonal);
+    }
 }

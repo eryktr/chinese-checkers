@@ -23,11 +23,12 @@ public class PieceCircle extends Circle implements BoardElement {
 
 	public void move(Field newPosition, Client client) {
 		client.sendOption(piece.getPosition().positionToString() + " " + newPosition.positionToString());
-		System.out.println(piece.getPosition().positionToString() + " " + newPosition.positionToString());
+		//System.out.println(piece.getPosition().positionToString() + " " + newPosition.positionToString());
         this.setCoordinates(newPosition);
         piece.getPosition().setStatus(FieldStatus.FREE);
 		newPosition.setStatus(FieldStatus.OCCUPIED);
 		this.piece.setField(newPosition);
+		
 	}
 	
 	private boolean pieceOnEnemyField() {
@@ -133,5 +134,17 @@ public class PieceCircle extends Circle implements BoardElement {
 	@Override
 	public FieldColor getColor() {
 		return piece.getPieceColor();
+	}
+	
+	public int getRow() {
+		return this.piece.getPosition().getRow();
+	}
+	
+	public int getDiagonal() {
+		return this.piece.getPosition().getDiagonal();
+	}
+	
+	public Piece getPiece() {
+		return this.piece;
 	}
 }

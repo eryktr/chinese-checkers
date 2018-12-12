@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 
 import board.BoardStage;
 import game.Game;
+import game.board.piece.Piece;
 import game.gamesettings.GameSettings;
 import gui.InformationStage;
 import gui.YourTurnStage;
@@ -43,6 +44,11 @@ public class ListenerThread extends Thread {
                     	System.out.println("I got game started");
                     	Platform.runLater(()->{
                     		client.closePreviousStage();
+                    		
+                    		for(Piece piece: game.getPieces()) {
+                            	System.out.println(piece.getPosition().positionToString());
+                            }
+                    		
                     		boardStage = new BoardStage(this.game, this.playerNumber, this.client);
                     		boardStage.show();
                     	});
@@ -55,8 +61,18 @@ public class ListenerThread extends Thread {
                     	});
                     }
                     
-                    else if(currentLine.contains("Your turn.")) {
+                    else if(currentLine.contains("move")) {
                     	Platform.runLater(()->{
+                    		try {
+								this.boardStage.makeMove(currentLine);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+                    	});
+                    }
+                    
+                    else if(currentLine.contains("Your turn.")) {
+                    	Platform.runLater(()->{         		
                     		boardStage.activate();
                     		YourTurnStage yourTurnStage = new YourTurnStage(client);
                     		yourTurnStage.show();

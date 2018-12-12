@@ -1,5 +1,10 @@
 package board;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import client.Client;
 import game.Game;
 import game.board.field.Field;
@@ -17,6 +22,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	private PieceCircle activePiece;
 	private Client client;
 	private boolean active;
+	private List<PieceCircle> pieces;
 	
 	public BoardStage(Game game, int numberOfPlayer, Client client) {
 		this.game = game;
@@ -25,6 +31,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		this.player = game.getPlayerByNumber(numberOfPlayer);
 		this.client = client;
 		this.active = false;
+		this.pieces = new ArrayList<PieceCircle>();
 		
 		drawBoard();
 	}
@@ -51,6 +58,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	
 	private void drawPiece(Piece piece, Group group) {
 		PieceCircle pieceCircle = new PieceCircle(piece, this);
+		this.pieces.add(pieceCircle);
 		group.getChildren().add(pieceCircle);
 	}
 	
@@ -58,12 +66,32 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		return element.getColor().equals(player.getColor());
 	}
 	
+	private PieceCircle getPieceCircle(Piece piece) throws Exception {
+		for(PieceCircle pieceCircle: this.pieces) {
+			if(pieceCircle.getPiece() == piece)
+				return pieceCircle;
+		}
+		throw new Exception("Piece doesn't exist");
+	}
+	
 	public void activate() {
 		this.active = true;
 	}
 	
-	public void makeMove() {
+	public void makeMove(String moveLine) throws Exception {
 		//TODO
+		String[] line = moveLine.split(" ");
+		int playerNumber = Integer.parseInt(line[5]);
+		
+		if(game.getPlayerByNumber(playerNumber) != this.player) {
+		int initialRow = Integer.parseInt(line[1]);
+		int initialDiagonal = Integer.parseInt(line[2]);
+		Piece piece = game.getPieceByField(game.getFieldByCoordinates(initialRow, initialDiagonal));
+		int destRow = Integer.parseInt(line[3]);
+		int destDiagonal = Integer.parseInt(line[4]);
+		Field newPosition = game.getFieldByCoordinates(destRow, destDiagonal);
+		this.getPieceCircle(piece).move(newPosition, client);
+		}
 	}
 
 	@Override
