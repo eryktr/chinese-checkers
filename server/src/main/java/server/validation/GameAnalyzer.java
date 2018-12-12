@@ -2,6 +2,7 @@ package server.validation;
 
 import game.Game;
 import game.board.field.Field;
+import game.board.field.FieldColor;
 import game.board.piece.Piece;
 import game.player.Player;
 
@@ -110,5 +111,17 @@ public class GameAnalyzer {
 
     private Field field(int row, int diagonal) throws Exception {
         return game.getFieldByCoordinates(row, diagonal);
+    }
+    
+    public boolean hasFinished(Player player) {
+    	Piece[] playerPieces = this.game.getPlayerPieces(player.getColor());
+    	for(Piece piece: playerPieces) {
+    		FieldColor fieldColor = piece.getPosition().getColor();
+    		FieldColor pieceColor = piece.getPieceColor();
+    		
+    		if(fieldColor != pieceColor)
+    			return false;
+    	}
+    	return true;
     }
 }

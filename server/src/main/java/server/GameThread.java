@@ -55,9 +55,11 @@ public class GameThread extends Thread {
         while (!isOver) {
             if(!game.getPlayerByNumber(currentPlayerNumber).isBot()) {
                 try {
-                    MoveDetails newMoveDetails = listenForMove();
-                    makeMove(newMoveDetails);
-                    endMove(newMoveDetails);
+                	if(!this.isWinner(currentPlayerNumber)) {
+                		MoveDetails newMoveDetails = listenForMove();
+                		makeMove(newMoveDetails);
+                	}
+                    endMove();
                 }
                 catch (Exception ex) {
                     System.out.println("Making move error");
@@ -116,6 +118,11 @@ public class GameThread extends Thread {
         hasJumped = validator.moveIsJump(initialField, destinationField);
     	}
     }
+    
+    private boolean isWinner(int number) {
+    	Player player = this.game.getPlayerByNumber(number);
+    	return this.game.isWinner(player);
+    }
 
     public void addPlayer(Socket player, BufferedReader br, PrintWriter pw) throws IOException {
         communicationData.addPlayer(player, br, pw);
@@ -128,9 +135,17 @@ public class GameThread extends Thread {
         return started;
     }
 
-    public void endMove(MoveDetails details) throws Exception {
+    public void endMove() throws Exception {
         if (!hasPossibleJumps(lastMovedPiece)) {
             hasJumped = false;
+            
+            if(this.hasFinished(currentPlayerNumber)) {
+            	this.addWinner(currentPlayerNumber);
+            	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
+            }
+            if(this.over())
+            	this.isOver = true;
+            
             //this.communicationData.sendMessageToAllPlayers("move: " + details.moveToString() + " " + currentPlayerNumber);
             currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
         }
@@ -138,5 +153,22 @@ public class GameThread extends Thread {
 
     private boolean hasPossibleJumps(Piece piece) throws Exception {//dodałam && hasJumped
         return validator.hasPossibleJumps(piece) && hasJumped;
+    }
+    
+    private boolean over() {
+    	for(int number=0; number<this.game.getNumberOfPlayers(); number++) {
+    		if(!this.validator.hasFinished(this.game.getPlayerByNumber(number))) {
+    			return false;
+    		}
+    	}
+    	return true;
+    }
+    
+    private boolean hasFinished(int number) {
+    	return this.validator.hasFinished(this.game.getPlayerByNumber(number));
+    }
+    
+    private void addWinner(int number) {
+    	this.game.addWinner(this.game.getPlayerByNumber(number));
     }
 }

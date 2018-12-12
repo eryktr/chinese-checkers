@@ -6,6 +6,7 @@ import board.BoardStage;
 import game.Game;
 import game.board.piece.Piece;
 import game.gamesettings.GameSettings;
+import game.player.Player;
 import gui.InformationStage;
 import gui.YourTurnStage;
 import javafx.application.Platform;
@@ -77,6 +78,27 @@ public class ListenerThread extends Thread {
                     		YourTurnStage yourTurnStage = new YourTurnStage(client);
                     		yourTurnStage.show();
                     	});
+                    }
+                    
+                    else if(currentLine.contains("winner")) { //winner 1
+                    	String[] string = currentLine.split(" ");
+                    	int number = Integer.parseInt(string[1]);
+                    	
+                    	if(number == this.playerNumber) {
+                    		Platform.runLater(()->{
+                        		InformationStage newStage = new InformationStage("You won!");
+                            	newStage.show();
+                        	});
+                    	}
+                    	else {
+                    		Player player = this.game.getPlayerByNumber(number);
+                    		String color = player.getColor().toString();
+                    		
+                    		Platform.runLater(()->{
+                        		InformationStage newStage = new InformationStage(color + "won!");
+                            	newStage.show();
+                        	});
+                    	}
                     }
                 }
 

@@ -109,4 +109,11 @@ public final class Game {
         }
     }
 
+    public void addWinner(Player winner) {
+    	this.winners.add(winner);
+    }
+    
+    public boolean isWinner(Player player) {
+    	return this.winners.contains(player);
+    }
 }

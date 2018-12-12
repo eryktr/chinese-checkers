@@ -46,4 +46,23 @@ public enum FieldColor {
                 return NONE;
         }
     }
+    
+    public String toString() {
+    	switch (this) {
+    	case RED:
+    		return "Red";
+    	case GREEN:
+            return "Green";
+        case BLUE:
+            return "Blue";
+        case ORANGE:
+            return "Orange";
+        case PURPLE:
+            return "Purple";
+        case YELLOW:
+            return "Yellow";
+        default:
+            return "";
+    	}
+    }
 }
