@@ -81,9 +81,9 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	public void makeMove(String moveLine) throws Exception {
 		//TODO
 		String[] line = moveLine.split(" ");
-		int playerNumber = Integer.parseInt(line[5]);
+		//int playerNumber = Integer.parseInt(line[5]);
 		
-		if(game.getPlayerByNumber(playerNumber) != this.player) {
+		//if(game.getPlayerByNumber(playerNumber) != this.player) {
 		int initialRow = Integer.parseInt(line[1]);
 		int initialDiagonal = Integer.parseInt(line[2]);
 		Piece piece = game.getPieceByField(game.getFieldByCoordinates(initialRow, initialDiagonal));
@@ -91,12 +91,33 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		int destDiagonal = Integer.parseInt(line[4]);
 		Field newPosition = game.getFieldByCoordinates(destRow, destDiagonal);
 		this.getPieceCircle(piece).move(newPosition, client);
-		}
+		
+		this.activePiece = null;
+		this.active = false;
+		//}
 	}
 
 	@Override
 	public void handle(MouseEvent event) {
+		
 		Object source = event.getSource();
+		BoardElement element = (BoardElement) source;
+		
+		if(this.active == true && element.isPiece() && isMyElement(element)) {
+			this.activePiece = (PieceCircle) element;
+		}
+		else if(element.isField() && this.active == true) {
+			FieldCircle fieldCircle = (FieldCircle) element;
+			Field newPosition = fieldCircle.getField();
+			if(this.activePiece != null) {
+				//this.activePiece.move(newPosition, client);
+				client.sendOption(activePiece.getPiece().getPosition().positionToString() + " " + newPosition.positionToString());
+				//this.activePiece = null;
+				//this.active = false;
+			}
+		}
+		
+		/*Object source = event.getSource();
 		BoardElement element = (BoardElement) source;
 		
 		if(this.active == true && element.isPiece() && isMyElement(element)) {
@@ -118,6 +139,6 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 					this.active = false;
 				}
 			}
-		}
+		}*/
 	}
 }
