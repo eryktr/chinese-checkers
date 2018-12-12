@@ -95,7 +95,7 @@ public class ListenerThread extends Thread {
                     		String color = player.getColor().toString();
                     		
                     		Platform.runLater(()->{
-                        		InformationStage newStage = new InformationStage(color + "won!");
+                        		InformationStage newStage = new InformationStage(color + " won!");
                             	newStage.show();
                         	});
                     	}

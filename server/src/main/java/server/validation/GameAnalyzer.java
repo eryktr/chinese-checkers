@@ -98,8 +98,9 @@ public class GameAnalyzer {
     	for(Piece piece: playerPieces) {
     		FieldColor fieldColor = piece.getPosition().getColor();
     		FieldColor pieceColor = piece.getPieceColor();
+    		FieldColor enemyColor = FieldColor.getEnemy(pieceColor);
     		
-    		if(fieldColor != pieceColor)
+    		if(fieldColor != enemyColor)
     			return false;
     	}
     	return true;

@@ -26,6 +26,7 @@ public class GameThread extends Thread {
     private int currentPlayerNumber;
     private boolean hasJumped = false;
     private Piece lastMovedPiece = null;
+    private boolean skip = false;
 
     public GameThread(GameSettings settings, Socket host, BufferedReader br, PrintWriter pw) throws IOException {
         communicationData.setUp(settings.getNumberOfHumanPlayers());
@@ -80,8 +81,10 @@ public class GameThread extends Thread {
         do {
             String moveLine = playerInputReader.readLine();
             
-            if(moveLine.contains("skip"))
+            if(moveLine.contains("skip")) {
+            	this.skip = true;
             	return null;
+            }
             details = new MoveDetails(currentPlayer, moveLine);
             isMoveLegal = validator.isValid(details, hasJumped, lastMovedPiece);
         } while (!isMoveLegal);
@@ -131,20 +134,35 @@ public class GameThread extends Thread {
     }
 
     public void endMove() throws Exception {
-        if (!hasPossibleJumps(lastMovedPiece)) {
+    	
+    	if(lastMovedPiece == null) {
+    		currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+    		hasJumped = false;
+    	}
+    	
+    	
+    	else if (!hasPossibleJumps(lastMovedPiece)) {
             hasJumped = false;
             lastMovedPiece = null;
             
-            if(this.hasFinished(currentPlayerNumber)) {
+            if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
             	this.addWinner(currentPlayerNumber);
             	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
             }
             if(this.over())
             	this.isOver = true;
             
-            //this.communicationData.sendMessageToAllPlayers("move: " + details.moveToString() + " " + currentPlayerNumber);
             currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+            
+            //communicationData.sendMessageToAllPlayers("I am in endMove()");
         }
+    	
+    	else {
+    		if(this.skip == true)
+    			currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+    			hasJumped = false;
+    			lastMovedPiece = null;
+    	}
     }
 
     private boolean hasPossibleJumps(Piece piece) throws Exception {//dodałam && hasJumped
