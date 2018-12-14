@@ -47,7 +47,8 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 			this.drawPiece(piece, group);
 		}
 		
-		Scene scene = new Scene(group, group.prefWidth(0) * 2, group.prefHeight(0) + BoardData.fieldSize);
+		//Scene scene = new Scene(group, group.prefWidth(0) * 2, group.prefHeight(0) + BoardData.fieldSize);
+		Scene scene = new Scene(group, group.prefWidth(0) * 2, BoardData.fieldSize + group.prefHeight(0));
 		this.setScene(scene);
 	}
 	

@@ -101,8 +101,8 @@ public class PieceCircle extends Circle implements BoardElement {
 		double r = getRadius();
 		double d = BoardData.gapSize;
 		double diagonal = field.getDiagonal();
-		return (2*r+d) * Math.sqrt(3) / 2 * diagonal;
-	}
+		return (2*r+d) * Math.sqrt(3) / 2 * diagonal + BoardData.fieldSize;
+	}//dopisałam +BoardData.fieldSize
 	
 	private void setColor() {
 		FieldColor color = this.piece.getPieceColor();

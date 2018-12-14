@@ -33,8 +33,8 @@ public class FieldCircle extends Circle implements BoardElement {
 	private double calculateY() {
 		double r = getRadius();
 		double d = BoardData.gapSize;
-		return (2*r+d) * Math.sqrt(3) / 2 * this.field.getDiagonal();
-	}
+		return (2*r+d) * Math.sqrt(3) / 2 * this.field.getDiagonal() + BoardData.fieldSize;
+	}//dopisałam +BoardSize.fieldSize
 	
 	private void setColor() {
 		FieldColor color = this.field.getColor();
