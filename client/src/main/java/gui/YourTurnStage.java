@@ -35,7 +35,7 @@ public class YourTurnStage extends Stage {
             }
 		});*/
 		
-		button.setOnAction(new SkipTurnEvent(client, this));
+		//button.setOnAction(new SkipTurnEvent(client, this));
 		
 		gridPane.add(button, 0, 1);
 		

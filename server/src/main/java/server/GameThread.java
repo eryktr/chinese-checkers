@@ -2,6 +2,7 @@ package server;
 
 import game.Game;
 import game.board.field.Field;
+import game.board.field.FieldColor;
 import game.board.field.FieldStatus;
 import game.board.piece.Piece;
 import game.gamesettings.GameSettings;
@@ -69,7 +70,24 @@ public class GameThread extends Thread {
             }
             else {
             	//obecny gracz jest botem
-            	
+            	try {
+            		if(!this.isWinner(currentPlayerNumber)) {
+            			Player botPlayer = game.getPlayerByNumber(currentPlayerNumber);
+            			boolean isMoveLegal = false;
+            			MoveDetails moveDetails;
+            			do {
+            				moveDetails = validator.makeBotsMove(botPlayer);
+            				isMoveLegal = validator.isValid(moveDetails, hasJumped, lastMovedPiece);
+            			}
+            			while(!isMoveLegal);
+            			
+            			makeMove(moveDetails);
+            			endMove();
+            		}
+            	}
+            	catch(Exception e) {
+            		e.printStackTrace();
+            	}
             }
         }
     }
@@ -82,10 +100,10 @@ public class GameThread extends Thread {
         PrintWriter playerPrinrWriter = communicationData.getPrintWriterByNumber(currentPlayerNumber);
         playerPrinrWriter.println("Your turn.");
         
-        if(lastMovedPiece != null)
+        /*if(lastMovedPiece != null)
         this.communicationData.sendMessageToAllPlayers("lastMovedPiece " + this.lastMovedPiece.positionToString());
         else
-        	this.communicationData.sendMessageToAllPlayers("lastMovedPiece is null");
+        	this.communicationData.sendMessageToAllPlayers("lastMovedPiece is null");*/
         
         Player currentPlayer = game.getPlayerByNumber(currentPlayerNumber);
         do {
@@ -111,16 +129,16 @@ public class GameThread extends Thread {
 
             Field initialField = game.getFieldByCoordinates(initialRow, initialDiagonal);
             Field destinationField = game.getFieldByCoordinates(destinationRow, destinationDiagonal);
-            System.out.println("initialField: " + initialField.positionToString());
+            /*System.out.println("initialField: " + initialField.positionToString());
             for(Piece piece: game.getPieces()) {
                 System.out.println(piece.getPosition().positionToString());
-            }
+            }*/
             Piece targetPiece = game.getPieceByField(initialField);
             
-            if(targetPiece != null)
+            /*if(targetPiece != null)
                 this.communicationData.sendMessageToAllPlayers("targetPiece " + targetPiece.positionToString());
                 else
-                	this.communicationData.sendMessageToAllPlayers("targetPiece is null");
+                	this.communicationData.sendMessageToAllPlayers("targetPiece is null");*/
 
             initialField.setStatus(FieldStatus.FREE);
             targetPiece.setField(destinationField);

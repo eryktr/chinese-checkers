@@ -16,6 +16,20 @@ public class GameAnalyzer {
     public boolean isValid(MoveDetails details, boolean hasJumped, Piece lastMovedPiece) throws Exception {
         Field initialField = game.getFieldByCoordinates(details.getInitialRow(), details.getInitialDiagonal());
         Field destinationField = game.getFieldByCoordinates(details.getDestinationRow(), details.getDestinationDiagonal());
+        
+        //sprawdzenie, czy pionek nie wychodzi z pola przeciwnika
+        Piece movingPiece = game.getPieceByField(initialField);
+        FieldColor movingPieceColor = movingPiece.getPieceColor();
+        FieldColor enemyColor = FieldColor.getEnemy(movingPieceColor);
+        FieldColor initialfieldColor = initialField.getColor(); //kolor pola, na ktorym znajduje sie movingPiece
+        if(initialfieldColor.equals(enemyColor)) {
+        	FieldColor destinationFieldColor = destinationField.getColor();
+        	if(!destinationFieldColor.equals(enemyColor)) {
+        		return false;
+        	}
+        }
+        //koniec sprawdzania, czy pionek nie wychodzi z pola przeciwnika
+        
         if(!sourceOccupiedAndDestFree(initialField, destinationField))
             return false;
         Piece activePiece = game.getPieceByField(initialField);
@@ -104,5 +118,17 @@ public class GameAnalyzer {
     			return false;
     	}
     	return true;
+    }
+    
+    public MoveDetails makeBotsMove(Player botPlayer) {
+    	MoveDetails moveDetails = null;
+    	FieldColor botsColor = botPlayer.getColor();
+		Piece[] botsPieces = game.getPlayerPieces(botsColor);
+		FieldColor enemyColor = FieldColor.getEnemy(botsColor);
+		Field[] enemyFields = game.getBoard().getFields(enemyColor);
+		
+		
+    	
+    	return moveDetails;
     }
 }

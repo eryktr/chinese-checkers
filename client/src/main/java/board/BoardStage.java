@@ -10,10 +10,15 @@ import game.Game;
 import game.board.field.Field;
 import game.board.piece.Piece;
 import game.player.Player;
+import gui.SkipTurnEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class BoardStage extends Stage implements EventHandler<MouseEvent> {
@@ -23,15 +28,22 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	private Client client;
 	private boolean active;
 	private List<PieceCircle> pieces;
+	private Label turnLabel;
+	private Button skipButton;
+	private Label colorLabel;
 	
 	public BoardStage(Game game, int numberOfPlayer, Client client) {
 		this.game = game;
 		this.setResizable(false);
 		this.activePiece = null;
 		this.player = game.getPlayerByNumber(numberOfPlayer);
+		this.colorLabel = new Label("You are " + player.getColor().toString() + ".");
 		this.client = client;
 		this.active = false;
 		this.pieces = new ArrayList<PieceCircle>();
+		this.turnLabel = new Label("Wait for you turn...");
+		this.skipButton = new Button("Skip turn");
+		skipButton.setOnAction(new SkipTurnEvent(client, this));
 		
 		drawBoard();
 	}
@@ -47,9 +59,25 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 			this.drawPiece(piece, group);
 		}
 		
-		//Scene scene = new Scene(group, group.prefWidth(0) * 2, group.prefHeight(0) + BoardData.fieldSize);
-		Scene scene = new Scene(group, group.prefWidth(0) * 2, BoardData.fieldSize + group.prefHeight(0));
+		GridPane grid = new GridPane();
+		grid.setAlignment(Pos.CENTER);
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.add(colorLabel, 0, 0);
+		grid.add(turnLabel, 1, 0);
+		grid.add(skipButton, 2, 0);
+		
+		GridPane gridPane = new GridPane();
+		gridPane.setAlignment(Pos.CENTER);
+		gridPane.setHgap(10);
+		gridPane.setVgap(10);
+		gridPane.add(group, 0, 0);
+		gridPane.add(grid, 0, 1);
+		Scene scene = new Scene(gridPane,gridPane.prefWidth(0) * 2, BoardData.fieldSize * 2 + gridPane.prefHeight(0));
 		this.setScene(scene);
+		
+		/*Scene scene = new Scene(group, group.prefWidth(0) * 2, BoardData.fieldSize + group.prefHeight(0));
+		this.setScene(scene);*/
 	}
 	
 	private void drawField(Field field, Group group) {
@@ -73,6 +101,10 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 				return pieceCircle;
 		}
 		throw new Exception("Piece doesn't exist");
+	}
+	
+	public void setLabel(String string) {
+		this.turnLabel.setText(string);
 	}
 	
 	public void activate() {

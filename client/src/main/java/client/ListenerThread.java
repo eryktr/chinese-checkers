@@ -46,9 +46,9 @@ public class ListenerThread extends Thread {
                     	Platform.runLater(()->{
                     		client.closePreviousStage();
                     		
-                    		for(Piece piece: game.getPieces()) {
+                    		/*for(Piece piece: game.getPieces()) {
                             	System.out.println(piece.getPosition().positionToString());
-                            }
+                            }*/
                     		
                     		boardStage = new BoardStage(this.game, this.playerNumber, this.client);
                     		boardStage.show();
@@ -66,6 +66,7 @@ public class ListenerThread extends Thread {
                     	Platform.runLater(()->{
                     		try {
 								this.boardStage.makeMove(currentLine);
+								this.boardStage.setLabel("Wait for your turn...");
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -75,8 +76,9 @@ public class ListenerThread extends Thread {
                     else if(currentLine.contains("Your turn.")) {
                     	Platform.runLater(()->{         		
                     		boardStage.activate();
-                    		YourTurnStage yourTurnStage = new YourTurnStage(client);
-                    		yourTurnStage.show();
+                    		boardStage.setLabel("Your turn!");
+                    		/*YourTurnStage yourTurnStage = new YourTurnStage(client);
+                    		yourTurnStage.show();*/
                     	});
                     }
                     
