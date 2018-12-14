@@ -167,16 +167,47 @@ public class GameThread extends Thread {
     }
     
     public void endMove() throws Exception {
-    	if(lastMovedPiece == null) {
-    		
+    	if(skip == true) {
     		if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
             	this.addWinner(currentPlayerNumber);
             	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
             }
             if(this.over())
             	this.isOver = true;
+			
+            currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+			hasJumped = false;
+			lastMovedPiece = null;
+			skip = false;
+    	}
+    	else if (!hasPossibleJumps(lastMovedPiece)) {
+            hasJumped = false;
+            lastMovedPiece = null;
+            
+            if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
+            	this.addWinner(currentPlayerNumber);
+            	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
+            }
+            if(this.over())
+            	this.isOver = true;
+            
+            currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+        }
+    	
+    	
+    	/*if(lastMovedPiece == null) {
     		
-    		currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+    		if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
+            	this.addWinner(currentPlayerNumber);
+            	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
+            }
+            if(this.over()) {
+            	this.isOver = true;
+            }
+    		
+            if(!hasJumped) {
+            	currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+            }
     		hasJumped = false;
     	}
     	else if (!hasPossibleJumps(lastMovedPiece)) {
@@ -202,12 +233,12 @@ public class GameThread extends Thread {
                 if(this.over())
                 	this.isOver = true;
     			
-    			currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
+                currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
     			hasJumped = false;
     			lastMovedPiece = null;
     			skip = false;
     		}
-    	}
+    	}*/
     }
 
     private boolean hasPossibleJumps(Piece piece) throws Exception {//dodałam && hasJumped

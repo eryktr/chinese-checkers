@@ -31,6 +31,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	private Label turnLabel;
 	private Button skipButton;
 	private Label colorLabel;
+	private SkipTurnEvent skipEvent;
 	
 	public BoardStage(Game game, int numberOfPlayer, Client client) {
 		this.game = game;
@@ -43,7 +44,8 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		this.pieces = new ArrayList<PieceCircle>();
 		this.turnLabel = new Label("Wait for you turn...");
 		this.skipButton = new Button("Skip turn");
-		skipButton.setOnAction(new SkipTurnEvent(client, this));
+		this.skipEvent = new SkipTurnEvent(client, this);
+		skipButton.setOnAction(skipEvent);
 		
 		drawBoard();
 	}
@@ -109,6 +111,11 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	
 	public void activate() {
 		this.active = true;
+		this.skipEvent.activate();
+	}
+	
+	public void setUnactive() {
+		this.active = false;
 	}
 	
 	public void makeMove(String moveLine) throws Exception {
@@ -126,6 +133,7 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		
 		this.activePiece = null;
 		this.active = false;
+		this.skipEvent.setUnactive();
 		//}
 	}
 
