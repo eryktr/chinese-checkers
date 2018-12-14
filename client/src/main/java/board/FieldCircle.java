@@ -26,14 +26,14 @@ public class FieldCircle extends Circle implements BoardElement {
 	private double calculateX() {
 		double r = getRadius();
 		double d = BoardData.gapSize;
-		return ((2*r +d)/2)*this.field.getRow() + 
-				((2*r+d)*(Math.sqrt(3)) / 2)* this.field.getDiagonal();
+		return ((2*r +d))*this.field.getRow() +
+				((2*r+d)*1/2)* this.field.getDiagonal();
 	}
 	
 	private double calculateY() {
 		double r = getRadius();
 		double d = BoardData.gapSize;
-		return r+(2*r+d)*this.field.getRow();
+		return (2*r+d) * Math.sqrt(3) / 2 * this.field.getDiagonal();
 	}
 	
 	private void setColor() {

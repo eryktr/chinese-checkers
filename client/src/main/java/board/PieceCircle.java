@@ -93,15 +93,15 @@ public class PieceCircle extends Circle implements BoardElement {
 		double d = BoardData.gapSize;
 		double row = field.getRow();
 		double diagonal = field.getDiagonal();
-		return ((2*r +d)/2)*row + 
-				((2*r+d)*(Math.sqrt(3)) / 2)* diagonal;
+		return ((2*r +d))*row+
+				((2*r+d)*1/2)* diagonal;
 	}
 	
 	private double calculateY(Field field) {
 		double r = getRadius();
 		double d = BoardData.gapSize;
-		double row = field.getRow();
-		return r+(2*r+d)*row;
+		double diagonal = field.getDiagonal();
+		return (2*r+d) * Math.sqrt(3) / 2 * diagonal;
 	}
 	
 	private void setColor() {
