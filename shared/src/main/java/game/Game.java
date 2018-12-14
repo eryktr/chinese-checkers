@@ -117,4 +117,8 @@ public final class Game {
     public boolean isWinner(Player player) {
     	return this.winners.contains(player);
     }
+    
+    public int getNumberOfWinners() {
+    	return this.winners.size();
+    }
 }

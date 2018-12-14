@@ -24,5 +24,8 @@ public class Piece {
         currentPosition = field;
     }
 
+    public String positionToString() {
+    	return this.currentPosition.positionToString();
+    }
 
 }
