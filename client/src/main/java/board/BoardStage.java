@@ -80,7 +80,6 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	}
 	
 	public void makeMove(String moveLine) throws Exception {
-		//TODO
 		String[] line = moveLine.split(" ");
 		//int playerNumber = Integer.parseInt(line[5]);
 		
