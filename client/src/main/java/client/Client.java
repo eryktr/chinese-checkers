@@ -13,9 +13,10 @@ public class Client {
 	private BufferedReader br;
 	private PrintWriter out;
 	private Stage stage;
-	
-	public Client(int port) throws IOException {
-		Socket socket = new Socket("localhost", port);
+
+
+	public Client(String address, int port) throws IOException {
+		Socket socket = new Socket(address, port);
         this.br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.out = new PrintWriter(socket.getOutputStream(), true);
         

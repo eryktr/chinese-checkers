@@ -8,8 +8,10 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import client.Client;
+import client.ConnectionCredentials;
 import gui.EventForCreateButton;
 import gui.EventForJoinButton;
+import gui.ServerInfoStage;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -43,7 +45,10 @@ public class Run extends Application {
     
     @Override
 	public void start(Stage startStage) throws IOException {
-    	this.client = new Client(8080);
+		ConnectionCredentials credentials = new ConnectionCredentials();
+		ServerInfoStage infoStage = new ServerInfoStage(credentials);
+		infoStage.showAndWait();
+    	this.client = new Client(credentials.address, credentials.port);
 		startStage.setTitle("Chinese checkers");
 		
 		Button createButton = new Button("Create");
