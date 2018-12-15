@@ -23,19 +23,32 @@ public class GameThread extends Thread {
     private CommunicationData communicationData = new CommunicationData();
     private Game game;
     private GameAnalyzer validator;
-    private int numberOfJoinedPlayers = 0;
     private int currentPlayerNumber;
     private boolean hasJumped = false;
     private Piece lastMovedPiece = null;
     private boolean skip = false;
 
+    private int numberOfJoinedPlayers = 0;
+    private GameSettings settings;
+
     public GameThread(GameSettings settings, Socket host, BufferedReader br, PrintWriter pw) throws IOException {
+        this.settings = settings;
         communicationData.setUp(settings.getNumberOfHumanPlayers());
         game = new Game(settings);
         //game.setUp();
         addPlayer(host, br, pw);
         validator = new GameAnalyzer(game);
     }
+
+    public int getNumberOfJoinedPlayers() {
+        return numberOfJoinedPlayers;
+    }
+
+    public GameSettings getSettings() {
+        return settings;
+    }
+
+
 
     @Override
     public void run()  {

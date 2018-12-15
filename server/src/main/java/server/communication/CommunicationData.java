@@ -10,10 +10,6 @@ public final class CommunicationData {
     private boolean[] playersConnected;
     int currentNumberOfPlayers = 0;
 
-    public CommunicationData() {
-
-    }
-
     public void setUp(final int numberOfHumanPlayers) {
         playerSockets = new Socket[numberOfHumanPlayers];
         playerInputReaders = new BufferedReader[numberOfHumanPlayers];

@@ -57,6 +57,7 @@ public class EventForCreateGameStage implements EventHandler<ActionEvent> {
 			boardStage.show();*/
 			//this.stage.close();
 			//client.setStage(stage);
+
 			InformationStage informationStage = new InformationStage("Waiting for more players...");
 			informationStage.show();
 			client.setStage(informationStage);

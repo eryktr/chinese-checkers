@@ -1,6 +1,7 @@
 package server;
 
 import game.gamesettings.GameSettings;
+import server.communication.CommunicationData;
 import server.exceptions.GameNotFoundException;
 
 import javax.naming.CommunicationException;
@@ -47,8 +48,29 @@ public class Server extends ServerSocket {
         }
         else if(joinerType.equals("join")) {
         	try {
-        		GameThread possibleGame = findOpenGame();
-        		possibleGame.addPlayer(player, hostInputReader, hostOutoutWriter);
+        		/*GameThread possibleGame = findOpenGame();
+        		possibleGame.addPlayer(player, hostInputReader, hostOutoutWriter);*/
+        		String message = "";
+        		for (GameThread thread : games) {
+                    GameSettings settings = thread.getSettings();
+                    int started = thread.hasStarted() ? 1 : 0;
+                    int numOfJoinedPlayers = thread.getNumberOfJoinedPlayers();
+                    int numOfHumanPlayers = settings.getNumberOfHumanPlayers();
+                    int numOfBots = settings.getNumberOfBots();
+                    int gameId = games.indexOf(thread);
+                    message += "possible" + " " + numOfHumanPlayers + " " + numOfBots + " " + numOfJoinedPlayers
+                            + " " + gameId + " " + started + "x";
+
+                }
+                message = message.substring(0, message.length() - 1);
+        		hostOutoutWriter.println(message);
+        		String chosenIDLine = hostInputReader.readLine();
+        		System.out.println(chosenIDLine);
+        		int id = Integer.parseInt(chosenIDLine.split(" ")[1]);
+        		GameThread gameThread = findOpenGame(id);
+        		if (gameThread == null)
+        		    throw new GameNotFoundException();
+        		gameThread.addPlayer(player, hostInputReader, hostOutoutWriter);
         	}
         	catch(GameNotFoundException e) {
         		hostOutoutWriter.println("No game found");
@@ -65,6 +87,10 @@ public class Server extends ServerSocket {
         else {
             throw new GameNotFoundException();
         }
+    }
+
+    private GameThread findOpenGame(int id) throws  GameNotFoundException {
+        return games.get(id);
     }
 
     private GameSettings setUpGame(BufferedReader hostInputReader) throws IOException {

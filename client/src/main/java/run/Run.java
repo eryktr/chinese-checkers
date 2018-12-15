@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import client.Client;
 import client.ConnectionCredentials;
 import gui.EventForCreateButton;
 import gui.EventForJoinButton;
+import gui.LobbyStage;
 import gui.ServerInfoStage;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -45,9 +48,11 @@ public class Run extends Application {
     
     @Override
 	public void start(Stage startStage) throws IOException {
+
 		ConnectionCredentials credentials = new ConnectionCredentials();
 		ServerInfoStage infoStage = new ServerInfoStage(credentials);
 		infoStage.showAndWait();
+
     	this.client = new Client(credentials.address, credentials.port);
 		startStage.setTitle("Chinese checkers");
 		
