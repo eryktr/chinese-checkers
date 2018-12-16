@@ -1,5 +1,8 @@
 package server.validation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.Game;
 import game.board.field.Field;
 import game.board.field.FieldColor;
@@ -120,15 +123,58 @@ public class GameAnalyzer {
     	return true;
     }
     
-    public MoveDetails makeBotsMove(Player botPlayer) {
+    /*public MoveDetails makeBotsMove(Player botPlayer) {
     	MoveDetails moveDetails = null;
     	FieldColor botsColor = botPlayer.getColor();
 		Piece[] botsPieces = game.getPlayerPieces(botsColor);
 		FieldColor enemyColor = FieldColor.getEnemy(botsColor);
 		Field[] enemyFields = game.getBoard().getFields(enemyColor);
 		
-		
-    	
-    	return moveDetails;
-    }
+		for(Piece botsPiece: botsPieces) {
+			List<Field> legalFields = new ArrayList<Field>();
+			int row = botsPiece.getPosition().getRow();
+			int diagonal = botsPiece.getPosition().getDiagonal();
+			Field legalField;
+			
+			legalField = field(row, diagonal + 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row, diagonal - 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row + 1, diagonal);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row - 1, diagonal);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row - 1, diagonal + 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row + 1, diagonal - 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			int numberOfLegalFields = legalFields.size();
+			String moveLine;
+			for(Field field: legalFields) {
+				moveLine = Integer.toString(row) + " " + Integer.toString(diagonal) + " " +
+			Integer.toString(field.getRow()) + " " + Integer.toString(field.getDiagonal());
+				moveDetails = new MoveDetails(botPlayer, moveLine);
+				return moveDetails;
+			}
+		}
+    	return null;
+    }*/
 }

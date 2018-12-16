@@ -69,7 +69,7 @@ public class ConcreteGameBuilder implements GameBuilder {
         }
     }
 
-    private void initializePlayer(PlayerType type, int playerNumber, int numberOfHumanPlayers, Player[] players) {
+    /*private void initializePlayer(PlayerType type, int playerNumber, int numberOfHumanPlayers, Player[] players) {
         FieldColor newPlayerColor = FieldColor.fromNumber(playerNumber);
         Player newPlayer = null;
         switch (type) {
@@ -78,6 +78,26 @@ public class ConcreteGameBuilder implements GameBuilder {
                 players[playerNumber] = newPlayer;
                 break;
             case BOT:
+                newPlayer = new BotPlayer(newPlayerColor);
+                players[playerNumber + numberOfHumanPlayers] = newPlayer;
+                break;
+        }
+        Piece[] newPlayerPieces = game.getPlayerPieces(newPlayerColor);
+        newPlayer.setPieces(newPlayerPieces);
+    }*/
+    
+    //zmieniłam metodę initializePlayer, był niepoprawnie przypisywany kolor do bota
+    private void initializePlayer(PlayerType type, int playerNumber, int numberOfHumanPlayers, Player[] players) {
+        FieldColor newPlayerColor = null;
+        Player newPlayer = null;
+        switch (type) {
+            case HUMAN:
+            	newPlayerColor = FieldColor.fromNumber(playerNumber);
+                newPlayer = new HumanPlayer(newPlayerColor);
+                players[playerNumber] = newPlayer;
+                break;
+            case BOT:
+            	newPlayerColor = FieldColor.fromNumber(playerNumber + numberOfHumanPlayers);
                 newPlayer = new BotPlayer(newPlayerColor);
                 players[playerNumber + numberOfHumanPlayers] = newPlayer;
                 break;

@@ -15,6 +15,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameThread extends Thread {
@@ -85,17 +87,29 @@ public class GameThread extends Thread {
             	//obecny gracz jest botem
             	try {
             		if(!this.isWinner(currentPlayerNumber)) {
+            			
+            			
+            			try {
+                            synchronized(this) {
+                                wait(200);
+                            }
+                        }
+                        catch (InterruptedException ex) {}
+            			
+            			
             			Player botPlayer = game.getPlayerByNumber(currentPlayerNumber);
-            			boolean isMoveLegal = false;
-            			MoveDetails moveDetails;
-            			do {
+            			//boolean isMoveLegal = false;
+            			MoveDetails moveDetails = this.makeBotsMove(botPlayer);
+            			
+            			/*do {
             				moveDetails = validator.makeBotsMove(botPlayer);
             				isMoveLegal = validator.isValid(moveDetails, hasJumped, lastMovedPiece);
             			}
-            			while(!isMoveLegal);
+            			while(!isMoveLegal);*/
             			
             			makeMove(moveDetails);
             			endMove();
+            			
             		}
             	}
             	catch(Exception e) {
@@ -134,7 +148,6 @@ public class GameThread extends Thread {
 
     private void makeMove(MoveDetails details) throws Exception {
     	if(details != null) {
-    	
             int initialRow = details.getInitialRow();
             int initialDiagonal = details.getInitialDiagonal();
             int destinationRow = details.getDestinationRow();
@@ -275,5 +288,142 @@ public class GameThread extends Thread {
     
     private void addWinner(int number) {
     	this.game.addWinner(this.game.getPlayerByNumber(number));
+    }
+    
+    private Field field(int row, int diagonal) {
+        return game.getFieldByCoordinates(row, diagonal);
+    }
+    
+    private MoveDetails makeBotsMove(Player botPlayer) throws Exception {
+    	MoveDetails moveDetails = null;
+    	FieldColor botsColor = botPlayer.getColor();
+    	this.communicationData.sendMessageToAllPlayers(botsColor.toString());
+		Piece[] botsPieces = game.getPlayerPieces(botsColor);
+		FieldColor enemyColor = FieldColor.getEnemy(botsColor);
+		Field[] enemyFields = game.getBoard().getFields(enemyColor);
+		boolean isMoveLegal = false;
+		int i = 0;
+		Field destinationField = null;
+		int destinationRow = 0;
+		int destinationDiagonal = 0;
+		Random generator = new Random();
+		
+		switch(enemyColor) {
+			case RED: destinationField = field(16,4); break;
+			case GREEN: destinationField = field(0,12); break;
+			case BLUE: destinationField = field(4,4); break;
+			case YELLOW: destinationField = field(4,16); break;
+			case PURPLE: destinationField = field(12,0); break;
+			case ORANGE: destinationField = field(12,12); break;
+			default: break;
+		}
+		
+		destinationRow = destinationField.getRow();
+		destinationDiagonal = destinationField.getDiagonal();
+		
+		for(Piece botsPiece: botsPieces) {
+			List<Field> legalFields = new ArrayList<Field>();
+			int row = botsPiece.getPosition().getRow();
+			int diagonal = botsPiece.getPosition().getDiagonal();
+			Field legalField;
+			int rowDiff = Math.abs(destinationRow - row);
+			int diagonalDiff = Math.abs(destinationDiagonal - diagonal);
+			
+			legalField = field(row, diagonal + 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row, diagonal - 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row + 1, diagonal);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row - 1, diagonal);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row - 1, diagonal + 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			legalField = field(row + 1, diagonal - 1);
+			if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+				legalFields.add(legalField);
+			}
+			
+			int numberOfLegalFields = legalFields.size();
+			String moveLine;
+			for(i=0;i<10;i++) {
+				Field field = legalFields.get(generator.nextInt(numberOfLegalFields));
+				moveLine = Integer.toString(row) + " " + Integer.toString(diagonal) + " " +
+							Integer.toString(field.getRow()) + " " + Integer.toString(field.getDiagonal());
+				moveDetails = new MoveDetails(botPlayer, moveLine);
+				isMoveLegal = validator.isValid(moveDetails, hasJumped, lastMovedPiece);
+				int newRowDiff = Math.abs(field.getRow() - destinationRow);
+				int newDiagonalDiff = Math.abs(field.getDiagonal() - destinationDiagonal);
+				if(isMoveLegal && ((newRowDiff<rowDiff && newDiagonalDiff<diagonalDiff) ||
+					(newRowDiff<rowDiff && newDiagonalDiff==diagonalDiff) || 
+					(newRowDiff==rowDiff && newDiagonalDiff<diagonalDiff))) {
+					return moveDetails;
+				}
+			}
+			
+			}
+		Piece randomPiece = botsPieces[generator.nextInt(10)];
+		int row = randomPiece.getPosition().getRow();
+		int diagonal = randomPiece.getPosition().getDiagonal();
+		List<Field> legalFields = new ArrayList<Field>();
+		Field legalField;
+		legalField = field(row, diagonal + 1);
+		if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+			legalFields.add(legalField);
+		}
+		
+		legalField = field(row, diagonal - 1);
+		if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+			legalFields.add(legalField);
+		}
+		
+		legalField = field(row + 1, diagonal);
+		if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+			legalFields.add(legalField);
+		}
+		
+		legalField = field(row - 1, diagonal);
+		if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+			legalFields.add(legalField);
+		}
+		
+		legalField = field(row - 1, diagonal + 1);
+		if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+			legalFields.add(legalField);
+		}
+		
+		legalField = field(row + 1, diagonal - 1);
+		if(legalField.getRow() != 0 || legalField.getDiagonal() != 0) {
+			legalFields.add(legalField);
+		}
+		
+		String moveLine;
+		for(Field field: legalFields) {
+			moveLine = Integer.toString(row) + " " + Integer.toString(diagonal) + " " +
+		Integer.toString(field.getRow()) + " " + Integer.toString(field.getDiagonal());
+			moveDetails = new MoveDetails(botPlayer, moveLine);
+			isMoveLegal = validator.isValid(moveDetails, hasJumped, lastMovedPiece);
+			if(isMoveLegal) {
+				return moveDetails;
+			}
+		}
+		
+		skip = true;
+    	return null;
     }
 }
