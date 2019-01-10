@@ -34,4 +34,8 @@ public abstract class Field {
     public void setStatus(FieldStatus status) {
         this.status = status;
     }
+    
+    public String positionToString() {
+    	return Integer.toString(row) + " " + Integer.toString(diagonal);
+    }
 }

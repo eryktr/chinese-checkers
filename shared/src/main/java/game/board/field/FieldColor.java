@@ -27,7 +27,27 @@ public enum FieldColor {
                 return FieldColor.NONE;
         }
     }
+	
+	/*public static FieldColor fromNumber(int number) {
+        switch (number) {
+            case 0:
+                return FieldColor.RED;
+            case 1:
+                return FieldColor.GREEN;
+            case 2:
+                return FieldColor.BLUE;
+            case 3:
+                return FieldColor.ORANGE;
+            case 4:
+                return FieldColor.PURPLE;
+            case 5:
+                return FieldColor.YELLOW;
+            default:
+                return FieldColor.NONE;
+        }
+    }*/
 
+    //
     public static FieldColor getEnemy(FieldColor color) {
         switch (color) {
             case RED:
@@ -45,5 +65,24 @@ public enum FieldColor {
             default:
                 return NONE;
         }
+    }
+    
+    public String toString() {
+    	switch (this) {
+    	case RED:
+    		return "Red";
+    	case GREEN:
+            return "Green";
+        case BLUE:
+            return "Blue";
+        case ORANGE:
+            return "Orange";
+        case PURPLE:
+            return "Purple";
+        case YELLOW:
+            return "Yellow";
+        default:
+            return "";
+    	}
     }
 }

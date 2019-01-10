@@ -28,6 +28,10 @@ public class Board {
     public Field[] getFields() {
         return fields;
     }
+    
+    public FieldInitializer getInitializer() {
+    	return this.fieldInitializer;
+    }
 
     public Field[] getFields(FieldColor color) {
         Field[] matchingFields = new Field[10];

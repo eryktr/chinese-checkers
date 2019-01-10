@@ -10,10 +10,6 @@ public final class CommunicationData {
     private boolean[] playersConnected;
     int currentNumberOfPlayers = 0;
 
-    public CommunicationData() {
-
-    }
-
     public void setUp(final int numberOfHumanPlayers) {
         playerSockets = new Socket[numberOfHumanPlayers];
         playerInputReaders = new BufferedReader[numberOfHumanPlayers];
@@ -21,8 +17,9 @@ public final class CommunicationData {
         playersConnected = new boolean[numberOfHumanPlayers];
     }
 
-    public void addPlayer(Socket playerSocket, BufferedReader br, PrintWriter pw) throws IOException {
+    public void addPlayer(Socket playerSocket, BufferedReader br, PrintWriter pw) {
         pw.println("Hello player");
+        pw.println(currentNumberOfPlayers);
         playerSockets[currentNumberOfPlayers] = playerSocket;
         playerInputReaders[currentNumberOfPlayers] = br;
         playerOutputWriters[currentNumberOfPlayers] = pw;
@@ -36,5 +33,11 @@ public final class CommunicationData {
 
     public PrintWriter getPrintWriterByNumber(int number) {
         return playerOutputWriters[number];
+    }
+    
+    public void sendMessageToAllPlayers(String message) {
+    	for(PrintWriter pw: playerOutputWriters) {
+    		pw.println(message);
+    	}
     }
 }

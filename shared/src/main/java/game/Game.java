@@ -3,6 +3,7 @@ package game;
 import game.board.Board;
 import game.board.field.Field;
 import game.board.field.FieldColor;
+import game.board.field.IllegalField;
 import game.board.piece.Piece;
 import game.gamebuilder.ConcreteGameBuilder;
 import game.gamebuilder.GameBuilder;
@@ -30,9 +31,17 @@ public final class Game {
     public Player getPlayerByNumber(int number) {
         return players[number];
     }
+    
+    public GameSettings getSettings() {
+    	return this.gameSettings;
+    }
 
     public Board getBoard() {
         return board;
+    }
+    
+    public Piece[] getPieces() {
+    	return pieces;
     }
 
     public Piece[] getPlayerPieces(FieldColor playerColor) {
@@ -53,7 +62,7 @@ public final class Game {
 
     public void setPlayers(Player[] players) {
         this.players = players;
-    };
+    }
 
     public void setPieces(Piece[] pieces) {
         this.pieces = pieces;
@@ -79,7 +88,7 @@ public final class Game {
         gameBuilder.buildGame(this);
     }
 
-    public Field getFieldByCoordinates(int row, int diagonal) throws Exception {
+    public Field getFieldByCoordinates(int row, int diagonal) {
         Optional<Field> result =  Arrays.stream(board.getFields())
                 .filter(f -> f.getRow() == row && f.getDiagonal() == diagonal)
                 .findFirst();
@@ -87,7 +96,7 @@ public final class Game {
             return result.get();
         }
         else {
-            throw new Exception("Field doesn't exist");
+            return new IllegalField(0,0);
         }
     }
 
@@ -101,4 +110,15 @@ public final class Game {
         }
     }
 
+    public void addWinner(Player winner) {
+    	this.winners.add(winner);
+    }
+    
+    public boolean isWinner(Player player) {
+    	return this.winners.contains(player);
+    }
+    
+    public int getNumberOfWinners() {
+    	return this.winners.size();
+    }
 }

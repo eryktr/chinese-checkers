@@ -22,4 +22,8 @@ public abstract class AbstractPlayer implements Player {
     public void setPieces(Piece[] pieces) {
         this.pieces = pieces;
     }
+    
+    public String toString() {
+    	return "FieldColor: " + homeColor.toString() + " enemyColor: " + enemyColor.toString();
+    }
 }
