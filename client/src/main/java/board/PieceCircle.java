@@ -22,66 +22,12 @@ public class PieceCircle extends Circle implements BoardElement {
 	}
 
 	public void move(Field newPosition, Client client) {
-		//client.sendOption(piece.getPosition().positionToString() + " " + newPosition.positionToString());
-		//System.out.println(piece.getPosition().positionToString() + " " + newPosition.positionToString());
         this.setCoordinates(newPosition);
         piece.getPosition().setStatus(FieldStatus.FREE);
 		newPosition.setStatus(FieldStatus.OCCUPIED);
 		this.piece.setField(newPosition);
 		
 	}
-	
-	/*private boolean pieceOnEnemyField() {
-		FieldColor enemyColor = FieldColor.getEnemy(getColor());
-		if(getColor().equals(enemyColor))
-			return true;
-		return false;
-	}*/
-	
-	/*private boolean leaveEnemyField(Field newPosition) {
-		if(pieceOnEnemyField()) {
-			FieldColor enemyColor = FieldColor.getEnemy(getColor());
-			if(newPosition.getColor().equals(enemyColor))
-				return false;
-			return true;
-		}
-		else
-			return false;
-	}*/
-	
-	/*private boolean moveIsJump(Field newPosition, Game game) throws Exception {
-		int row = piece.getPosition().getRow();
-		int diagonal = piece.getPosition().getDiagonal();
-		int newRow = newPosition.getRow();
-		int newDiagonal = newPosition.getDiagonal();
-	
-		return (newRow==row-2 && newDiagonal==diagonal+2 && isOccupied(row-1, diagonal+1, game)) 
-				|| (newRow==row && newDiagonal==diagonal+2 && isOccupied(row, diagonal+1, game))
-				|| (newRow==row+2 && newDiagonal==diagonal && isOccupied(row+1, diagonal, game)) 
-				|| (newRow==row+2 && newDiagonal==diagonal-2 && isOccupied(row+1, diagonal-1, game)) 
-				|| (newRow==row && newDiagonal==diagonal-2 && isOccupied(row, diagonal-1, game)) 
-				|| (newRow==row-2 && newDiagonal==diagonal && isOccupied(row-1, diagonal, game));
-	}*/
-	
-	/*private boolean isOccupied(int row, int diagonal, Game game) throws Exception {
-		return !game.getFieldByCoordinates(row, diagonal).isFree();
-	}*/
-	
-	/*private boolean moveIsStandard(Field newPosition) {
-		int row = piece.getPosition().getRow();
-		int diagonal = piece.getPosition().getDiagonal();
-		int newRow = newPosition.getRow();
-		int newDiagonal = newPosition.getDiagonal();
-		
-		return (newRow==row-1 && newDiagonal==diagonal+1) || (newRow==row && newDiagonal==diagonal+1)
-				|| (newRow==row+1 && newDiagonal==diagonal) || (newRow==row+1 && newDiagonal==diagonal-1) 
-				|| (newRow==row && newDiagonal==diagonal-1) || (newRow==row-1 && newDiagonal==diagonal);
-	}*/
-	
-	/*public boolean isMovePossible(Field newPosition, Game game) throws Exception {
-		return (moveIsStandard(newPosition) || moveIsJump(newPosition, game))
-				&& !leaveEnemyField(newPosition);
-	}*/
 	
 	private void setCoordinates(Field field) {
 		this.setCenterX(this.calculateX(field));
@@ -102,7 +48,7 @@ public class PieceCircle extends Circle implements BoardElement {
 		double d = BoardData.gapSize;
 		double diagonal = field.getDiagonal();
 		return (2*r+d) * Math.sqrt(3) / 2 * diagonal + BoardData.fieldSize;
-	}//dopisałam +BoardData.fieldSize
+	}
 	
 	private void setColor() {
 		FieldColor color = this.piece.getPieceColor();

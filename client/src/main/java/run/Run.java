@@ -27,23 +27,7 @@ public class Run extends Application {
 	
     public static void main(String[] args) {
     	launch(args);
-    	
-        //Scanner scanner = new Scanner(System.in);
-        /*Socket socket = new Socket("localhost", 8080);
-        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        ListenerThread lt = new ListenerThread(br, out);
-        lt.start();*/
 
-        //String string = scanner.nextLine();
-        //out.println(string);
-        //String line = br.readLine();
-        //System.out.println(line);
-
-        /*while (true) {
-            String stringg = scanner.nextLine();
-            out.println(stringg);
-        }*/
     }
     
     @Override

@@ -48,8 +48,6 @@ public class Server extends ServerSocket {
         }
         else if(joinerType.equals("join")) {
         	try {
-        		/*GameThread possibleGame = findOpenGame();
-        		possibleGame.addPlayer(player, hostInputReader, hostOutoutWriter);*/
         		String message = "";
         		for (GameThread thread : games) {
                     GameSettings settings = thread.getSettings();

@@ -28,14 +28,6 @@ public class YourTurnStage extends Stage {
 		gridPane.add(label, 0, 0);
 
 		Button button = new Button("Skip turn");
-		/*button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-            public void handle(ActionEvent event) {
-                client.sendOption("skip");
-            }
-		});*/
-		
-		//button.setOnAction(new SkipTurnEvent(client, this));
 		
 		gridPane.add(button, 0, 1);
 		

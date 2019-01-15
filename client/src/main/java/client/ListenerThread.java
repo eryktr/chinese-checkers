@@ -64,11 +64,6 @@ public class ListenerThread extends Thread {
                         System.out.println("I got game started");
                         Platform.runLater(() -> {
                             client.closePreviousStage();
-                    		
-                    		/*for(Piece piece: game.getPieces()) {
-                            	System.out.println(piece.getPosition().positionToString());
-                            }*/
-
                             boardStage = new BoardStage(this.game, this.playerNumber, this.client);
                             boardStage.show();
                         });
@@ -91,8 +86,6 @@ public class ListenerThread extends Thread {
                         Platform.runLater(() -> {
                             boardStage.activate();
                             boardStage.setLabel("Your turn!");
-                    		/*YourTurnStage yourTurnStage = new YourTurnStage(client);
-                    		yourTurnStage.show();*/
                         });
                     } else if (currentLine.contains("winner")) { //winner 1
                         String[] string = currentLine.split(" ");

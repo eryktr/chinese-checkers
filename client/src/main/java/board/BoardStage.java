@@ -77,9 +77,6 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		gridPane.add(grid, 0, 1);
 		Scene scene = new Scene(gridPane,gridPane.prefWidth(0) * 2, BoardData.fieldSize * 2 + gridPane.prefHeight(0));
 		this.setScene(scene);
-		
-		/*Scene scene = new Scene(group, group.prefWidth(0) * 2, BoardData.fieldSize + group.prefHeight(0));
-		this.setScene(scene);*/
 	}
 	
 	private void drawField(Field field, Group group) {
@@ -120,9 +117,6 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 	
 	public void makeMove(String moveLine) throws Exception {
 		String[] line = moveLine.split(" ");
-		//int playerNumber = Integer.parseInt(line[5]);
-		
-		//if(game.getPlayerByNumber(playerNumber) != this.player) {
 		int initialRow = Integer.parseInt(line[1]);
 		int initialDiagonal = Integer.parseInt(line[2]);
 		Piece piece = game.getPieceByField(game.getFieldByCoordinates(initialRow, initialDiagonal));
@@ -134,7 +128,6 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		this.activePiece = null;
 		this.active = false;
 		this.skipEvent.setUnactive();
-		//}
 	}
 
 	@Override
@@ -149,36 +142,9 @@ public class BoardStage extends Stage implements EventHandler<MouseEvent> {
 		else if(element.isField() && this.active == true) {
 			FieldCircle fieldCircle = (FieldCircle) element;
 			Field newPosition = fieldCircle.getField();
-			if(this.activePiece != null) {
-				//this.activePiece.move(newPosition, client);
+			if(this.activePiece != null) { ;
 				client.sendOption(activePiece.getPiece().getPosition().positionToString() + " " + newPosition.positionToString());
-				//this.activePiece = null;
-				//this.active = false;
 			}
 		}
-		
-		/*Object source = event.getSource();
-		BoardElement element = (BoardElement) source;
-		
-		if(this.active == true && element.isPiece() && isMyElement(element)) {
-			this.activePiece = (PieceCircle) element;
-		}
-		else if(element.isField() && this.active == true) {
-			FieldCircle fieldCircle = (FieldCircle) element;
-			Field newPosition = fieldCircle.getField();
-			boolean isMovePossible = false;
-			if(this.activePiece != null) {
-				try {
-					isMovePossible = activePiece.isMovePossible(newPosition,game);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				if(isMovePossible) {
-					this.activePiece.move(newPosition, client);
-					this.activePiece = null;
-					this.active = false;
-				}
-			}
-		}*/
 	}
 }

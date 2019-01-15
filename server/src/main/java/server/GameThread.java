@@ -84,7 +84,6 @@ public class GameThread extends Thread {
                 }
             }
             else {
-            	//obecny gracz jest botem
             	try {
             		if(!this.isWinner(currentPlayerNumber)) {
             			
@@ -98,14 +97,7 @@ public class GameThread extends Thread {
             			
             			
             			Player botPlayer = game.getPlayerByNumber(currentPlayerNumber);
-            			//boolean isMoveLegal = false;
             			MoveDetails moveDetails = this.makeBotsMove(botPlayer);
-            			
-            			/*do {
-            				moveDetails = validator.makeBotsMove(botPlayer);
-            				isMoveLegal = validator.isValid(moveDetails, hasJumped, lastMovedPiece);
-            			}
-            			while(!isMoveLegal);*/
             			
             			makeMove(moveDetails);
             			endMove();
@@ -126,11 +118,6 @@ public class GameThread extends Thread {
         BufferedReader playerInputReader = communicationData.getInputReaderByNumber(currentPlayerNumber);
         PrintWriter playerPrinrWriter = communicationData.getPrintWriterByNumber(currentPlayerNumber);
         playerPrinrWriter.println("Your turn.");
-        
-        /*if(lastMovedPiece != null)
-        this.communicationData.sendMessageToAllPlayers("lastMovedPiece " + this.lastMovedPiece.positionToString());
-        else
-        	this.communicationData.sendMessageToAllPlayers("lastMovedPiece is null");*/
         
         Player currentPlayer = game.getPlayerByNumber(currentPlayerNumber);
         do {
@@ -155,16 +142,7 @@ public class GameThread extends Thread {
 
             Field initialField = game.getFieldByCoordinates(initialRow, initialDiagonal);
             Field destinationField = game.getFieldByCoordinates(destinationRow, destinationDiagonal);
-            /*System.out.println("initialField: " + initialField.positionToString());
-            for(Piece piece: game.getPieces()) {
-                System.out.println(piece.getPosition().positionToString());
-            }*/
             Piece targetPiece = game.getPieceByField(initialField);
-            
-            /*if(targetPiece != null)
-                this.communicationData.sendMessageToAllPlayers("targetPiece " + targetPiece.positionToString());
-                else
-                	this.communicationData.sendMessageToAllPlayers("targetPiece is null");*/
 
             initialField.setStatus(FieldStatus.FREE);
             targetPiece.setField(destinationField);
@@ -219,52 +197,7 @@ public class GameThread extends Thread {
             
             currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
         }
-    	
-    	
-    	/*if(lastMovedPiece == null) {
-    		
-    		if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
-            	this.addWinner(currentPlayerNumber);
-            	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
-            }
-            if(this.over()) {
-            	this.isOver = true;
-            }
-    		
-            if(!hasJumped) {
-            	currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
-            }
-    		hasJumped = false;
-    	}
-    	else if (!hasPossibleJumps(lastMovedPiece)) {
-            hasJumped = false;
-            lastMovedPiece = null;
-            
-            if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
-            	this.addWinner(currentPlayerNumber);
-            	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
-            }
-            if(this.over())
-            	this.isOver = true;
-            
-            currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
-        }
-    	else {
-    		if(this.skip == true) {
-    			
-    			if(this.hasFinished(currentPlayerNumber) && !this.isWinner(currentPlayerNumber)) {
-                	this.addWinner(currentPlayerNumber);
-                	this.communicationData.sendMessageToAllPlayers("winner " + currentPlayerNumber);
-                }
-                if(this.over())
-                	this.isOver = true;
-    			
-                currentPlayerNumber = (currentPlayerNumber + 1) % game.getNumberOfPlayers();
-    			hasJumped = false;
-    			lastMovedPiece = null;
-    			skip = false;
-    		}
-    	}*/
+
     }
 
     private boolean hasPossibleJumps(Piece piece) throws Exception {//dodałam && hasJumped
@@ -272,12 +205,6 @@ public class GameThread extends Thread {
     }
     
     private boolean over() {
-    	/*for(int number=0; number<this.game.getNumberOfPlayers(); number++) {
-    		if(!this.validator.hasFinished(this.game.getPlayerByNumber(number))) {
-    			return false;
-    		}
-    	}
-    	return true;*/
     	
     	return this.game.getNumberOfPlayers() - 1 == this.game.getNumberOfWinners();
     }

@@ -8,3 +8,8 @@ browse through the list of games hosted on the server, join to an existing one a
 ## Server
 The server was implemented using TCP sockets.
 The server is multithreaded, allowing multiple games taking place in parallel.
+
+The server also supports a simple AI - you might choose the desired number of computer players
+that will play against you.
+
+To implement the features, string-based communication protocol was used.
